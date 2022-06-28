@@ -4,13 +4,14 @@ import fastifyCookie from "@fastify/cookie";
 import fastifySession from "@fastify/session";
 import { DatabaseAdapter } from "./types/DatabaseAdapter";
 import { database } from "./utils/mockDatabase";
+import { storageRoutes } from "./routes/resources/storages";
 
 declare module "fastify" {
   interface FastifyInstance {
     database: DatabaseAdapter
   }
   export interface Session {
-    user_id: string
+    userId?: string
   }
 }
 
@@ -42,6 +43,7 @@ const build = async (opts: FastifyServerOptions = {}) => {
   });
 
   await app.register(authRoutes, { prefix: "/auth" });
+  await app.register(storageRoutes, { prefix: "/storages" });
 
   return app;
 };

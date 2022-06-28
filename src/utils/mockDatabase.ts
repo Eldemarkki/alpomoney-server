@@ -1,17 +1,13 @@
-import { DatabaseAdapter } from "../types/DatabaseAdapter";
-
-interface User {
-  id: string,
-  username: string,
-  passwordHash: string
-}
+import { DatabaseAdapter, Storage, UserWithPasswordHash } from "../types/DatabaseAdapter";
 
 interface Tables {
-  users: User[]
+  users: UserWithPasswordHash[],
+  storages: Storage[]
 }
 
 const tables: Tables = {
-  users: []
+  users: [],
+  storages: []
 };
 
 let runningId = 0;
@@ -44,5 +40,38 @@ export const database: DatabaseAdapter = {
   },
   reset: async () => {
     tables.users = [];
+  },
+  createStorage: async (userId: string, storageName: string, initialBalance: number) => {
+    const storage: Storage = {
+      id: getRandomId().toString(),
+      userId,
+      storageName,
+      initialBalance
+    };
+
+    tables.storages.push(storage);
+    return storage;
+  },
+  deleteStorage: async (userId: string, storageId: string) => {
+    const storage = tables.storages.find(storage => storage.id === storageId && storage.userId === userId);
+    if (!storage) return false;
+
+    tables.storages = tables.storages.filter(storage => storage.id !== storageId);
+    return true;
+  },
+  getStorages: async (userId: string) => {
+    return tables.storages.filter(storage => storage.userId === userId);
+  },
+  getStorage: async (userId: string, storageId: string) => {
+    return tables.storages.find(storage => storage.id === storageId && storage.userId === userId);
+  },
+  editStorage: async (userId: string, storageId: string, storageName?: string, initialBalance?: number) => {
+    const storage = tables.storages.find(storage => storage.id === storageId && storage.userId === userId);
+    if (!storage) return null;
+
+    if (storageName !== undefined) storage.storageName = storageName;
+    if (initialBalance !== undefined) storage.initialBalance = initialBalance;
+
+    return storage;
   }
 };
