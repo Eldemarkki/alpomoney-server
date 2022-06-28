@@ -1,6 +1,6 @@
 import { Type, Static } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
-import { database } from "../../utils/mockDatabase";
+import { database } from "../../../utils/mockDatabase";
 
 const Storage = Type.Object({
   storageName: Type.String(),
