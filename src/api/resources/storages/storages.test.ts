@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { beforeEach, describe, expect, test } from "vitest";
-import { build } from "../../app";
-import { database } from "../../utils/mockDatabase";
+import { build } from "../../../app";
+import { database } from "../../../utils/mockDatabase";
 
 describe("storages", () => {
   let user1: {

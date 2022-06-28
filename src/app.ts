@@ -1,10 +1,10 @@
 import fastify, { FastifyServerOptions } from "fastify";
-import { authRoutes } from "./routes/auth/authRoutes";
+import { authRoutes } from "./api/auth/authRoutes";
 import fastifyCookie from "@fastify/cookie";
 import fastifySession from "@fastify/session";
 import { DatabaseAdapter } from "./types/DatabaseAdapter";
 import { database } from "./utils/mockDatabase";
-import { storageRoutes } from "./routes/resources/storages";
+import { storageRoutes } from "./api/resources/storages";
 
 declare module "fastify" {
   interface FastifyInstance {
