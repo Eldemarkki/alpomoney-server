@@ -1,91 +1,48 @@
 import { Type, Static } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
+import { AccessSingleResource, AccessSingleResourceType } from "../../../types/types";
 import { requireAuthentication } from "../../../utils/authUtils";
 import { NotFoundError } from "../../../utils/errors";
 import { database } from "../../../utils/mockDatabase";
+import { deleteRoute } from "../utils/deleteRoute";
+import { getAllRoute } from "../utils/getAllRoute";
+import { getSingleRoute } from "../utils/getSingleRoute";
+import { postRoute } from "../utils/postRoute";
 
 const Storage = Type.Object({
-  storageName: Type.String(),
+  name: Type.String(),
   initialBalance: Type.Number({
     default: 0
   })
 });
 
-const AccessSingleStorage = Type.Object({
-  storageId: Type.String()
-});
-
 const EditStorageBody = Type.Object({
-  storageName: Type.Optional(Type.String()),
+  name: Type.Optional(Type.String()),
   initialBalance: Type.Optional(Type.Number())
 });
 
-type StorageType = Static<typeof Storage>;
-type AccessSingleStorageType = Static<typeof AccessSingleStorage>;
 type EditStorageBodyType = Static<typeof EditStorageBody>;
 
 export const storageRoutes: FastifyPluginAsync = async fastify => {
-  fastify.get("/", async (request, reply) => {
-    const userId = requireAuthentication(request);
-    const storages = await database.getStorages(userId);
-    await reply.send(storages);
-  });
+  await fastify.register(getAllRoute(database.getStorages));
+  await fastify.register(getSingleRoute(database.getStorage));
+  await fastify.register(deleteRoute(database.deleteStorage));
+  await fastify.register(postRoute<typeof Storage>(database.createStorage));
 
-  fastify.get<{ Params: AccessSingleStorageType }>("/:storageId", {
+  fastify.put<{ Params: AccessSingleResourceType, Body: EditStorageBodyType }>("/:id", {
     schema: {
-      params: AccessSingleStorage
-    }
-  }, async (request, reply) => {
-    const userId = requireAuthentication(request);
-    const { storageId } = request.params;
-
-    const storage = await database.getStorage(userId, storageId);
-    if (!storage) throw new NotFoundError("Storage", storageId);
-
-    await reply.send(storage);
-  });
-
-  fastify.put<{ Params: AccessSingleStorageType, Body: EditStorageBodyType }>("/:storageId", {
-    schema: {
-      params: AccessSingleStorage,
+      params: AccessSingleResource,
       body: EditStorageBody
     }
   }, async (request, reply) => {
     const userId = requireAuthentication(request);
 
-    const { storageId } = request.params;
-    const { storageName, initialBalance } = request.body;
-    const storage = await database.editStorage(userId, storageId, storageName, initialBalance);
+    const { id } = request.params;
+    const { name, initialBalance } = request.body;
+    const storage = await database.editStorage(userId, id, name, initialBalance);
 
-    if (!storage) throw new NotFoundError("Storage", storageId);
-
-    await reply.send(storage);
-  });
-
-  fastify.post<{ Body: StorageType }>("/", {
-    schema: {
-      body: Storage
-    }
-  }, async (request, reply) => {
-    const userId = requireAuthentication(request);
-
-    const { storageName, initialBalance } = request.body;
-    const storage = await database.createStorage(userId, storageName, initialBalance);
+    if (!storage) throw new NotFoundError("Storage", id);
 
     await reply.send(storage);
-  });
-
-  fastify.delete<{ Params: AccessSingleStorageType }>("/:storageId", {
-    schema: {
-      params: AccessSingleStorage
-    }
-  }, async (request, reply) => {
-    const userId = requireAuthentication(request);
-    const { storageId } = request.params;
-
-    const success = await database.deleteStorage(userId, storageId);
-    if (!success) throw new NotFoundError("Storage", storageId);
-
-    await reply.code(200).send();
   });
 };

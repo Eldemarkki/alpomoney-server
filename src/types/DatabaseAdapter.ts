@@ -1,3 +1,5 @@
+import { WithoutIds } from "./types";
+
 export interface UserWithPasswordHash {
   id: string,
   username: string,
@@ -9,7 +11,7 @@ export type User = Omit<UserWithPasswordHash, "passwordHash">;
 export interface Storage {
   id: string,
   userId: string,
-  storageName: string,
+  name: string,
   initialBalance: number
 }
 
@@ -17,10 +19,10 @@ export interface DatabaseAdapter {
   signUp: (email: string, password: string) => Promise<User | null>,
   login: (email: string, password: string) => Promise<User | null>,
   reset: () => Promise<void>,
-  createStorage: (userId: string, storageName: string, initialBalance: number) => Promise<Storage | null>,
-  deleteStorage: (userId: string, storageId: string) => Promise<boolean>,
-  getStorages: (userId: string) => Promise<Storage[] | null>,
-  getStorage: (userId: string, storageId: string) => Promise<Storage | null | undefined>,
-  editStorage: (userId: string, storageId: string, storageName?: string, initialBalance?: number)
+  createStorage: (userId: string, data: WithoutIds<Storage>) => Promise<Storage>,
+  deleteStorage: (userId: string, id: string) => Promise<boolean>,
+  getStorages: (userId: string) => Promise<Storage[]>,
+  getStorage: (userId: string, id: string) => Promise<Storage | null | undefined>,
+  editStorage: (userId: string, id: string, name?: string, initialBalance?: number)
     => Promise<Storage | null>
 }

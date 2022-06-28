@@ -41,35 +41,35 @@ export const database: DatabaseAdapter = {
   reset: async () => {
     tables.users = [];
   },
-  createStorage: async (userId: string, storageName: string, initialBalance: number) => {
+  createStorage: async (userId, data) => {
     const storage: Storage = {
       id: getRandomId().toString(),
       userId,
-      storageName,
-      initialBalance
+      initialBalance: data.initialBalance || 0, // TODO: Remove this 0 default
+      name: data.name
     };
 
     tables.storages.push(storage);
     return storage;
   },
-  deleteStorage: async (userId: string, storageId: string) => {
-    const storage = tables.storages.find(storage => storage.id === storageId && storage.userId === userId);
+  deleteStorage: async (userId: string, id: string) => {
+    const storage = tables.storages.find(storage => storage.id === id && storage.userId === userId);
     if (!storage) return false;
 
-    tables.storages = tables.storages.filter(storage => storage.id !== storageId);
+    tables.storages = tables.storages.filter(storage => storage.id !== id);
     return true;
   },
   getStorages: async (userId: string) => {
     return tables.storages.filter(storage => storage.userId === userId);
   },
-  getStorage: async (userId: string, storageId: string) => {
-    return tables.storages.find(storage => storage.id === storageId && storage.userId === userId);
+  getStorage: async (userId: string, id: string) => {
+    return tables.storages.find(storage => storage.id === id && storage.userId === userId);
   },
-  editStorage: async (userId: string, storageId: string, storageName?: string, initialBalance?: number) => {
-    const storage = tables.storages.find(storage => storage.id === storageId && storage.userId === userId);
+  editStorage: async (userId: string, id: string, name?: string, initialBalance?: number) => {
+    const storage = tables.storages.find(storage => storage.id === id && storage.userId === userId);
     if (!storage) return null;
 
-    if (storageName !== undefined) storage.storageName = storageName;
+    if (name !== undefined) storage.name = name;
     if (initialBalance !== undefined) storage.initialBalance = initialBalance;
 
     return storage;

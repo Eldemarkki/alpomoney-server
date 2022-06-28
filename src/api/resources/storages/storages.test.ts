@@ -57,20 +57,20 @@ describe("storages", () => {
         cookie: user1.cookie
       },
       payload: {
-        storageName: "myStorage"
+        name: "myStorage"
       }
     });
 
     expect(response.statusCode).toBe(200);
     expect(response.json()).toMatchObject({
-      storageName: "myStorage",
+      name: "myStorage",
       userId: user1.id,
       initialBalance: 0
     });
   });
 
   test("should be able to delete own storages", async () => {
-    const storage = await database.createStorage(user1.id, "myStorage", 0);
+    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
@@ -88,7 +88,7 @@ describe("storages", () => {
   });
 
   test("shouldn't be able to access a storage after deletion", async () => {
-    const storage = await database.createStorage(user1.id, "myStorage", 0);
+    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
@@ -114,7 +114,7 @@ describe("storages", () => {
   });
 
   test("shouldn't be able to delete other users' storages", async () => {
-    const storage = await database.createStorage(user1.id, "myStorage", 0);
+    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
@@ -132,7 +132,7 @@ describe("storages", () => {
   });
 
   test("shouldn't be able to delete storages if not logged in", async () => {
-    const storage = await database.createStorage(user1.id, "myStorage", 0);
+    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
@@ -147,7 +147,7 @@ describe("storages", () => {
   });
 
   test("should be able to edit own storages", async () => {
-    const storage = await database.createStorage(user1.id, "myStorage", 0);
+    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
@@ -160,14 +160,14 @@ describe("storages", () => {
         cookie: user1.cookie
       },
       payload: {
-        storageName: "myStorage2",
+        name: "myStorage2",
         initialBalance: 30
       }
     });
 
     expect(response.statusCode).toBe(200);
     expect(response.json()).toEqual({
-      storageName: "myStorage2",
+      name: "myStorage2",
       userId: user1.id,
       initialBalance: 30,
       id: storage.id
@@ -182,7 +182,7 @@ describe("storages", () => {
         cookie: user1.cookie
       },
       payload: {
-        storageName: "myStorage2",
+        name: "myStorage2",
         initialBalance: 30
       }
     });
@@ -191,7 +191,7 @@ describe("storages", () => {
   });
 
   test("shouldn't be able to edit other users' storages", async () => {
-    const storage = await database.createStorage(user1.id, "myStorage", 0);
+    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
@@ -204,7 +204,7 @@ describe("storages", () => {
         cookie: user2.cookie
       },
       payload: {
-        storageName: "myStorage2",
+        name: "myStorage2",
         initialBalance: 30
       }
     });
@@ -213,7 +213,7 @@ describe("storages", () => {
   });
 
   test("should be able to get a single own storage", async () => {
-    const storage = await database.createStorage(user1.id, "myStorage", 0);
+    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
@@ -229,7 +229,7 @@ describe("storages", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.json()).toMatchObject({
-      storageName: "myStorage",
+      name: "myStorage",
       userId: user1.id,
       initialBalance: 0
     });
@@ -247,9 +247,9 @@ describe("storages", () => {
   });
 
   test("should be able to get all own storages", async () => {
-    const storage1 = await database.createStorage(user1.id, "myStorage1", 0);
-    const storage2 = await database.createStorage(user1.id, "myStorage2", 0);
-    const storage3 = await database.createStorage(user2.id, "otherStorage", 0);
+    const storage1 = await database.createStorage(user1.id, { name: "myStorage1", initialBalance: 0 });
+    const storage2 = await database.createStorage(user1.id, { name: "myStorage2", initialBalance: 0 });
+    const storage3 = await database.createStorage(user2.id, { name: "otherStorage", initialBalance: 0 });
 
     if (!storage1 || !storage2 || !storage3) {
       throw new Error("This should never happen");
@@ -268,13 +268,13 @@ describe("storages", () => {
     expect(response.json()).toEqual(expect.arrayContaining([
       {
         id: storage2.id,
-        storageName: "myStorage2",
+        name: "myStorage2",
         userId: user1.id,
         initialBalance: 0
       },
       {
         id: storage1.id,
-        storageName: "myStorage1",
+        name: "myStorage1",
         userId: user1.id,
         initialBalance: 0
       }
@@ -282,7 +282,7 @@ describe("storages", () => {
   });
 
   test("shouldn't be able to get another users single storage", async () => {
-    const storage = await database.createStorage(user1.id, "myStorage", 0);
+    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
