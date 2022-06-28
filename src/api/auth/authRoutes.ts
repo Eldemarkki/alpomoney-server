@@ -25,7 +25,7 @@ export const authRoutes: FastifyPluginAsync = async fastify => {
 
     request.session.set("userId", user.id);
     await request.session.save();
-    await reply.code(200).send(user);
+    await reply.send(user);
   });
 
   fastify.post<{ Body: UserType }>("/login", {
@@ -42,6 +42,6 @@ export const authRoutes: FastifyPluginAsync = async fastify => {
 
     request.session.set("userId", user.id);
     await request.session.save();
-    await reply.code(200).send(user);
+    await reply.send(user);
   });
 };
