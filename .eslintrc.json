@@ -1,0 +1,115 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "root": true,
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "double"],
+    "semi": ["error", "always"],
+    "comma-dangle": ["error", "never"],
+    "max-len": [
+      "error",
+      {
+        "code": 120
+      }
+    ],
+    "@typescript-eslint/unbound-method": "off",
+    "no-trailing-spaces": "error",
+    "@typescript-eslint/object-curly-spacing": ["error", "always"],
+    "no-multi-spaces": ["error"],
+    "arrow-parens": ["error", "as-needed"],
+    "arrow-spacing": [
+      "error",
+      {
+        "before": true,
+        "after": true
+      }
+    ],
+    "array-bracket-spacing": ["error", "never"],
+    "@typescript-eslint/type-annotation-spacing": [
+      "error",
+      {
+        "before": false,
+        "after": true,
+        "overrides": {
+          "arrow": {
+            "before": true,
+            "after": true
+          }
+        }
+      }
+    ],
+    "@typescript-eslint/func-call-spacing": ["error"],
+    "@typescript-eslint/comma-spacing": [
+      "error",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "@typescript-eslint/keyword-spacing": [
+      "error",
+      {
+        "before": true,
+        "after": true
+      }
+    ],
+    "@typescript-eslint/space-before-blocks": ["error", "always"],
+    "@typescript-eslint/space-infix-ops": ["error"],
+    "eqeqeq": ["error", "always"],
+    "space-in-parens": ["error", "never"],
+    "no-whitespace-before-property": ["error"],
+    "rest-spread-spacing": ["error", "never"],
+    "key-spacing": [
+      "error",
+      {
+        "beforeColon": false,
+        "afterColon": true
+      }
+    ],
+    "@typescript-eslint/member-delimiter-style": [
+      "error",
+      {
+        "multiline": {
+          "delimiter": "comma",
+          "requireLast": false
+        },
+        "singleline": {
+          "delimiter": "comma",
+          "requireLast": false
+        }
+      }
+    ],
+    "eol-last": ["error", "always"],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "varsIgnorePattern": "^_" }
+    ],
+    "@typescript-eslint/require-await": "off",
+    "@typescript-eslint/ban-ts-comment": "off" // TOOD: This should be removed after the initial project setup is done.
+  }
+}
