@@ -5,6 +5,7 @@ import { WithIds } from "../../../types/types";
 import { requireAuthentication } from "../../../utils/authUtils";
 
 export const postRoute = <T extends TProperties & TSchema>(
+  validator: TSchema,
   create: (
     userId: string,
     data: UndefinedToUnknown<keyof T extends never ? unknown : Static<T>>
@@ -13,7 +14,11 @@ export const postRoute = <T extends TProperties & TSchema>(
   const route: FastifyPluginAsync = async fastify => {
     fastify.post<{
       Body: T
-    }>("/", async (request, reply) => {
+    }>("/", {
+      schema: {
+        body: validator
+      }
+    }, async (request, reply) => {
       const userId = requireAuthentication(request);
       const storage = await create(userId, request.body);
       await reply.send(storage);

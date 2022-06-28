@@ -63,9 +63,9 @@ export const database: DatabaseAdapter = {
     return tables.storages.filter(storage => storage.userId === userId);
   },
   getStorage: async (userId: string, id: string) => {
-    return tables.storages.find(storage => storage.id === id && storage.userId === userId);
+    return tables.storages.find(storage => storage.id === id && storage.userId === userId) || null;
   },
-  editStorage: async (userId: string, id: string, name?: string, initialBalance?: number) => {
+  editStorage: async (userId: string, id: string, { name, initialBalance }) => {
     const storage = tables.storages.find(storage => storage.id === id && storage.userId === userId);
     if (!storage) return null;
 

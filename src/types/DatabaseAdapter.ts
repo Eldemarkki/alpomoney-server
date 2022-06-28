@@ -22,7 +22,7 @@ export interface DatabaseAdapter {
   createStorage: (userId: string, data: WithoutIds<Storage>) => Promise<Storage>,
   deleteStorage: (userId: string, id: string) => Promise<boolean>,
   getStorages: (userId: string) => Promise<Storage[]>,
-  getStorage: (userId: string, id: string) => Promise<Storage | null | undefined>,
-  editStorage: (userId: string, id: string, name?: string, initialBalance?: number)
+  getStorage: (userId: string, id: string) => Promise<Storage | null>,
+  editStorage: (userId: string, id: string, data: Partial<WithoutIds<Storage>>)
     => Promise<Storage | null>
 }
