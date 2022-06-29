@@ -6,7 +6,7 @@ import { deleteRoute } from "../utils/deleteRoute";
 import { editRoute } from "../utils/editRoute";
 import { getAllRoute } from "../utils/getAllRoute";
 import { getSingleRoute } from "../utils/getSingleRoute";
-import { postRoute } from "../utils/postRoute";
+import { createRoute } from "../utils/createRoute";
 
 const Storage = Type.Object({
   name: Type.String(),
@@ -24,6 +24,6 @@ export const storageRoutes: FastifyPluginAsync = async fastify => {
   await fastify.register(getAllRoute(database.getStorages));
   await fastify.register(getSingleRoute(database.getStorage));
   await fastify.register(deleteRoute(database.deleteStorage));
-  await fastify.register(postRoute<typeof Storage>(Storage, database.createStorage));
+  await fastify.register(createRoute<typeof Storage>(Storage, database.createStorage));
   await fastify.register(editRoute(EditStorageBody, database.editStorage));
 };

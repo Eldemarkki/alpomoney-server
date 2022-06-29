@@ -4,7 +4,7 @@ import { UndefinedToUnknown } from "fastify/types/type-provider";
 import { WithIds } from "../../../types/types";
 import { requireAuthentication } from "../../../utils/authUtils";
 
-export const postRoute = <T extends TProperties & TSchema>(
+export const createRoute = <T extends TProperties & TSchema>(
   validator: TSchema,
   create: (
     userId: string,
