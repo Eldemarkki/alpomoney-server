@@ -2,11 +2,11 @@ import { Type } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
 import { Storage } from "../../../types/DatabaseAdapter";
 import { database } from "../../../utils/mockDatabase";
-import { deleteRoute } from "../utils/deleteRoute";
-import { editRoute } from "../utils/editRoute";
-import { getAllRoute } from "../utils/getAllRoute";
-import { getSingleRoute } from "../utils/getSingleRoute";
-import { createRoute } from "../utils/createRoute";
+import { deleteRoute } from "../../../api/resources/utils/deleteRoute/deleteRoute";
+import { getSingleRoute } from "../../../api/resources/utils/getSingleRoute/getSingleRoute";
+import { createRoute } from "../../../api/resources/utils/createRoute/createRoute";
+import { getAllRoute } from "../../../api/resources/utils/getAllRoute/getAllRoute";
+import { editRoute } from "../../../api/resources/utils/editRoute/editRoute";
 
 const Storage = Type.Object({
   name: Type.String(),

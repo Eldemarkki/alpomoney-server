@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from "fastify";
-import { AccessSingleResource, AccessSingleResourceType } from "../../../types/types";
-import { requireAuthentication } from "../../../utils/authUtils";
-import { NotFoundError } from "../../../utils/errors";
+import { AccessSingleResource, AccessSingleResourceType } from "../../../../types/types";
+import { requireAuthentication } from "../../../../utils/authUtils";
+import { NotFoundError } from "../../../../utils/errors";
 
 export const getSingleRoute = <T>(get: (userId: string, id: string) => Promise<T>) => {
   const route: FastifyPluginAsync = async fastify => {

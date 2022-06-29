@@ -1,8 +1,8 @@
 import { Static, TProperties, TSchema } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
 import { UndefinedToUnknown } from "fastify/types/type-provider";
-import { WithIds } from "../../../types/types";
-import { requireAuthentication } from "../../../utils/authUtils";
+import { WithIds } from "../../../../types/types";
+import { requireAuthentication } from "../../../../utils/authUtils";
 
 export const createRoute = <T extends TProperties & TSchema>(
   validator: TSchema,
