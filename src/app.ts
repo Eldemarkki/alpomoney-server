@@ -18,12 +18,6 @@ declare module "fastify" {
 const build = async (opts: FastifyServerOptions = {}) => {
   const app = fastify({
     ...opts,
-    ajv: {
-      customOptions: {
-        strict: "log",
-        keywords: ["kind", "modifier"]
-      }
-    },
     ignoreTrailingSlash: true,
     bodyLimit: 1024 * 1024 * 10
   });

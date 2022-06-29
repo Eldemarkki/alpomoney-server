@@ -21,9 +21,8 @@
   "dependencies": {
     "@fastify/cookie": "^7.0.0",
     "@fastify/session": "^9.0.0",
-    "@fastify/type-provider-typebox": "^1.0.0",
-    "@sinclair/typebox": "^0.23.5",
-    "fastify": "^4.1.0"
+    "@sinclair/typebox": "^0.24.1",
+    "fastify": "^4.2.0"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
