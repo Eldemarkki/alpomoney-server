@@ -1,7 +1,7 @@
 import { Type } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
-import { database } from "../../../utils/mockDatabase";
-import { idorProtectedResource } from "../utils/idorProtectedResource";
+import { database } from "../../utils/mockDatabase";
+import { idorProtectedResource } from "./utils/idorProtectedResource";
 
 const StorageValidator = Type.Object({
   name: Type.String(),

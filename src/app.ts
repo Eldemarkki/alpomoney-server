@@ -4,7 +4,7 @@ import fastifyCookie from "@fastify/cookie";
 import fastifySession from "@fastify/session";
 import { DatabaseAdapter } from "./types/DatabaseAdapter";
 import { database } from "./utils/mockDatabase";
-import { storageRoutes } from "./api/resources/storages/storages";
+import { storageRoutes } from "./api/resources/storages";
 import { UserId } from "./types/types";
 
 declare module "fastify" {
