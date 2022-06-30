@@ -1,6 +1,6 @@
-import { TSchema } from "@sinclair/typebox";
+import { TProperties, TSchema } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
-import { WithIds, WithoutIds } from "../../../types/types";
+import { UserId, WithIds, WithoutIds } from "../../../types/types";
 import { NotFoundError } from "../../../utils/errors";
 import { createRoute } from "./createRoute/createRoute";
 import { deleteRoute } from "./deleteRoute/deleteRoute";
@@ -8,17 +8,22 @@ import { editRoute } from "./editRoute/editRoute";
 import { getAllRoute } from "./getAllRoute/getAllRoute";
 import { getSingleRoute } from "./getSingleRoute/getSingleRoute";
 
-type SimplestPossible<T> = {
-  getAll_UNSAFE: () => Promise<WithIds<T>[]>,
-  get_UNSAFE: (id: string) => Promise<WithIds<T> | undefined>,
-  delete_UNSAFE: (id: string) => Promise<boolean>,
-  edit_UNSAFE: (id: string, data: WithoutIds<T>) => Promise<WithIds<T> | undefined>,
-  create: (userId: string, data: WithoutIds<T>) => Promise<WithIds<T>>
+type SimplestPossible<ResourceType, ResourceId> = {
+  getAll_UNSAFE: () => Promise<WithIds<ResourceType, ResourceId>[]>,
+  get_UNSAFE: (id: ResourceId) => Promise<WithIds<ResourceType, ResourceId> | undefined>,
+  delete_UNSAFE: (id: ResourceId) => Promise<boolean>,
+  edit_UNSAFE: (id: ResourceId, data: WithoutIds<ResourceType>) =>
+    Promise<WithIds<ResourceType, ResourceId> | undefined>,
+  create: (userId: UserId, data: WithoutIds<ResourceType>) => Promise<WithIds<ResourceType, ResourceId>>
 }
 
-export const idorProtectedResource = <T>(validator: TSchema, methods: SimplestPossible<T>) => {
+export const idorProtectedResource = <ResourceType, ResourceId>(
+  createValidator: TSchema,
+  editValidator: TSchema,
+  methods: SimplestPossible<ResourceType, ResourceId>
+) => {
   const plugin: FastifyPluginAsync = async fastify => {
-    await fastify.register(getSingleRoute(async (id, userId) => {
+    await fastify.register(getSingleRoute<WithIds<ResourceType, ResourceId>, ResourceId>(async (userId, id) => {
       const resource = await methods.get_UNSAFE(id);
       if (!resource) throw new NotFoundError();
       if (resource.userId !== userId) throw new NotFoundError();
@@ -28,21 +33,21 @@ export const idorProtectedResource = <T>(validator: TSchema, methods: SimplestPo
       const resources = await methods.getAll_UNSAFE();
       return resources.filter(resource => resource.userId === userId);
     }));
-    await fastify.register(deleteRoute(async (userId, id) => {
+    await fastify.register(deleteRoute<ResourceId>(async (userId, id) => {
       const resource = await methods.get_UNSAFE(id);
       if (!resource) throw new NotFoundError();
       if (resource.userId !== userId) throw new NotFoundError();
       return await methods.delete_UNSAFE(id);
     }));
-    await fastify.register(createRoute(validator, async (userId, data) => {
-      const resource = await methods.create(userId, data as WithoutIds<T>);
+    await fastify.register(createRoute(createValidator, async (userId, data) => {
+      const resource = await methods.create(userId, data as WithoutIds<ResourceType>);
       return resource;
     }));
-    await fastify.register(editRoute(validator, async (userId, id, data) => {
+    await fastify.register(editRoute<TProperties & TSchema, ResourceId>(editValidator, async (userId, id, data) => {
       const resource = await methods.get_UNSAFE(id);
       if (!resource) throw new NotFoundError();
       if (resource.userId !== userId) throw new NotFoundError();
-      return await methods.edit_UNSAFE(id, data as WithoutIds<T>);
+      return await methods.edit_UNSAFE(id, data as WithoutIds<ResourceType>);
     }));
   };
 

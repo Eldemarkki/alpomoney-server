@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { FastifyInstance } from "fastify";
+import { UserId } from "../../types/types";
 
 export const signUp = async (app: FastifyInstance, username: string, password: string) => {
   const response = await app.inject({
@@ -12,7 +13,7 @@ export const signUp = async (app: FastifyInstance, username: string, password: s
   });
 
   return {
-    id: response.json().id as string,
+    id: response.json().id as UserId,
     cookie: response.headers["set-cookie"]?.toString() || ""
   };
 };

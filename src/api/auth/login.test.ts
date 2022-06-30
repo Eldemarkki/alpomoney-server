@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { build } from "../../app";
 import { getUserIdPlugin } from "../../utils/sessionUtils";
 import { database } from "../../utils/mockDatabase";
+import { UserId } from "../../types/types";
 
 describe("login", () => {
   beforeEach(async () => {
@@ -86,7 +87,7 @@ describe("login", () => {
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const userId = loginResponse.json().id as string;
+    const userId = loginResponse.json().id as UserId;
 
     expect(sessionResponse.json()).toEqual({ userId });
   });

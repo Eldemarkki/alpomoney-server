@@ -1,12 +1,12 @@
 import { FastifyPluginAsync } from "fastify";
-import { AccessSingleResource, AccessSingleResourceType } from "../../../../types/types";
+import { AccessSingleResource, AccessSingleResourceType, UserId } from "../../../../types/types";
 import { requireAuthentication } from "../../../../utils/authUtils";
 import { NotFoundError } from "../../../../utils/errors";
 
 
-export const deleteRoute = (deleteResource: (userId: string, id: string) => Promise<boolean>) => {
+export const deleteRoute = <ResourceId>(deleteResource: (userId: UserId, id: ResourceId) => Promise<boolean>) => {
   const route: FastifyPluginAsync = async fastify => {
-    fastify.delete<{ Params: AccessSingleResourceType }>("/:id", {
+    fastify.delete<{ Params: AccessSingleResourceType<ResourceId> }>("/:id", {
       schema: {
         params: AccessSingleResource
       }

@@ -5,15 +5,15 @@ export class ApiError extends Error {
 }
 
 export class NotFoundError extends ApiError {
-  constructor(resourceName: string | undefined = undefined, id: string | undefined = undefined) {
+  constructor(resourceName: unknown = undefined, id: unknown = undefined) {
     if (resourceName && id) {
-      super(`Resource '${resourceName}' (id='${id}') was not found`, 404);
+      super(`Resource '${String(resourceName)}' (id='${String(id)}') was not found`, 404);
     }
     else if (resourceName) {
-      super(`Resource '${resourceName}' was not found`, 404);
+      super(`Resource '${String(resourceName)}' was not found`, 404);
     }
     else if (id) {
-      super(`Resource (id='${id}') was not found`, 404);
+      super(`Resource (id='${String(id)}') was not found`, 404);
     }
     else {
       super("Resource was not found", 404);

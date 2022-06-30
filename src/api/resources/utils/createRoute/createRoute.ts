@@ -1,19 +1,19 @@
 import { Static, TProperties, TSchema } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
 import { UndefinedToUnknown } from "fastify/types/type-provider";
-import { WithIds } from "../../../../types/types";
+import { UserId, WithIds } from "../../../../types/types";
 import { requireAuthentication } from "../../../../utils/authUtils";
 
-export const createRoute = <T extends TProperties & TSchema>(
+export const createRoute = <ResourceType extends TProperties & TSchema, ResourceId>(
   validator: TSchema,
   create: (
-    userId: string,
-    data: UndefinedToUnknown<keyof T extends never ? unknown : Static<T>>
-  ) => Promise<WithIds<Static<T>>>
+    userId: UserId,
+    data: UndefinedToUnknown<keyof ResourceType extends never ? unknown : Static<ResourceType>>
+  ) => Promise<WithIds<Static<ResourceType>, ResourceId>>
 ) => {
   const route: FastifyPluginAsync = async fastify => {
     fastify.post<{
-      Body: T
+      Body: ResourceType
     }>("/", {
       schema: {
         body: validator

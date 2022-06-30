@@ -1,11 +1,7 @@
 import { Type } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
 import { database } from "../../../utils/mockDatabase";
-import { deleteRoute } from "../../../api/resources/utils/deleteRoute/deleteRoute";
-import { getSingleRoute } from "../../../api/resources/utils/getSingleRoute/getSingleRoute";
-import { createRoute } from "../../../api/resources/utils/createRoute/createRoute";
-import { getAllRoute } from "../../../api/resources/utils/getAllRoute/getAllRoute";
-import { editRoute } from "../../../api/resources/utils/editRoute/editRoute";
+import { idorProtectedResource } from "../utils/idorProtectedResource";
 
 const StorageValidator = Type.Object({
   name: Type.String(),
@@ -20,9 +16,11 @@ const EditStorageBody = Type.Object({
 });
 
 export const storageRoutes: FastifyPluginAsync = async fastify => {
-  await fastify.register(getAllRoute(database.getStorages));
-  await fastify.register(getSingleRoute(database.getStorage));
-  await fastify.register(deleteRoute(database.deleteStorage));
-  await fastify.register(createRoute<typeof StorageValidator>(StorageValidator, database.createStorage));
-  await fastify.register(editRoute(EditStorageBody, database.editStorage));
+  await fastify.register(idorProtectedResource(StorageValidator, EditStorageBody, {
+    get_UNSAFE: database.storage.get,
+    getAll_UNSAFE: database.storage.getAll,
+    delete_UNSAFE: database.storage.delete,
+    edit_UNSAFE: database.storage.edit,
+    create: database.storage.create
+  }));
 };

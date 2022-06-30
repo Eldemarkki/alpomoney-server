@@ -1,28 +1,29 @@
-import { WithoutIds } from "./types";
+import { StorageId, UserId, WithIds, WithoutIds } from "./types";
 
 export interface UserWithPasswordHash {
-  id: string,
+  id: UserId,
   username: string,
   passwordHash: string
 }
 
 export type User = Omit<UserWithPasswordHash, "passwordHash">;
 
-export interface Storage {
-  id: string,
-  userId: string,
+export type Storage = WithIds<{
   name: string,
   initialBalance: number
+}, StorageId>
+
+export interface Resource<ResourceType, ResourceId> {
+  create: (userId: UserId, data: WithoutIds<ResourceType>) => Promise<ResourceType>,
+  delete: (id: ResourceId) => Promise<boolean>,
+  getAll: () => Promise<ResourceType[]>,
+  get: (id: ResourceId) => Promise<ResourceType | undefined>,
+  edit: (id: ResourceId, data: WithoutIds<ResourceType>) => Promise<ResourceType | undefined>
 }
 
 export interface DatabaseAdapter {
   signUp: (email: string, password: string) => Promise<User | undefined>,
   login: (email: string, password: string) => Promise<User | undefined>,
   reset: () => Promise<void>,
-  createStorage: (userId: string, data: WithoutIds<Storage>) => Promise<Storage>,
-  deleteStorage: (userId: string, id: string) => Promise<boolean>,
-  getStorages: (userId: string) => Promise<Storage[]>,
-  getStorage: (userId: string, id: string) => Promise<Storage | undefined>,
-  editStorage: (userId: string, id: string, data: Partial<WithoutIds<Storage>>)
-    => Promise<Storage | undefined>
+  storage: Resource<Storage, StorageId>
 }

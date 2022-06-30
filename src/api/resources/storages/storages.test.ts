@@ -33,7 +33,7 @@ describe("storages", async () => {
   });
 
   test("should be able to delete own storages", async () => {
-    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
+    const storage = await database.storage.create(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
@@ -51,7 +51,7 @@ describe("storages", async () => {
   });
 
   test("shouldn't be able to access a storage after deletion", async () => {
-    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
+    const storage = await database.storage.create(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
@@ -77,7 +77,7 @@ describe("storages", async () => {
   });
 
   test("shouldn't be able to delete other users' storages", async () => {
-    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
+    const storage = await database.storage.create(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
@@ -95,7 +95,7 @@ describe("storages", async () => {
   });
 
   test("shouldn't be able to delete storages if not logged in", async () => {
-    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
+    const storage = await database.storage.create(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
@@ -110,7 +110,7 @@ describe("storages", async () => {
   });
 
   test("should be able to edit own storages", async () => {
-    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
+    const storage = await database.storage.create(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
@@ -154,7 +154,7 @@ describe("storages", async () => {
   });
 
   test("shouldn't be able to edit other users' storages", async () => {
-    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
+    const storage = await database.storage.create(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
@@ -176,7 +176,7 @@ describe("storages", async () => {
   });
 
   test("should be able to get a single own storage", async () => {
-    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
+    const storage = await database.storage.create(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");
@@ -210,9 +210,9 @@ describe("storages", async () => {
   });
 
   test("should be able to get all own storages", async () => {
-    const storage1 = await database.createStorage(user1.id, { name: "myStorage1", initialBalance: 0 });
-    const storage2 = await database.createStorage(user1.id, { name: "myStorage2", initialBalance: 0 });
-    const storage3 = await database.createStorage(user2.id, { name: "otherStorage", initialBalance: 0 });
+    const storage1 = await database.storage.create(user1.id, { name: "myStorage1", initialBalance: 0 });
+    const storage2 = await database.storage.create(user1.id, { name: "myStorage2", initialBalance: 0 });
+    const storage3 = await database.storage.create(user2.id, { name: "otherStorage", initialBalance: 0 });
 
     if (!storage1 || !storage2 || !storage3) {
       throw new Error("This should never happen");
@@ -245,7 +245,7 @@ describe("storages", async () => {
   });
 
   test("shouldn't be able to get another users single storage", async () => {
-    const storage = await database.createStorage(user1.id, { name: "myStorage", initialBalance: 0 });
+    const storage = await database.storage.create(user1.id, { name: "myStorage", initialBalance: 0 });
 
     if (!storage) {
       throw new Error("This should never happen");

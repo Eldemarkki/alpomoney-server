@@ -1,4 +1,5 @@
 import { DatabaseAdapter, Storage, UserWithPasswordHash } from "../types/DatabaseAdapter";
+import { StorageId, UserId } from "../types/types";
 
 interface Tables {
   users: UserWithPasswordHash[],
@@ -20,7 +21,7 @@ export const database: DatabaseAdapter = {
     }
 
     const user = {
-      id: getRandomId().toString(),
+      id: getRandomId().toString() as UserId,
       username,
       passwordHash: password
     };
@@ -42,37 +43,39 @@ export const database: DatabaseAdapter = {
     tables.users = [];
     tables.storages = [];
   },
-  createStorage: async (userId, data) => {
-    const storage: Storage = {
-      id: getRandomId().toString(),
-      userId,
-      initialBalance: data.initialBalance || 0, // TODO: Remove this 0 default
-      name: data.name
-    };
+  storage: {
+    get: async id => {
+      return tables.storages.find(storage => storage.id === id);
+    },
+    getAll: async () => {
+      return tables.storages;
+    },
+    create: async (userId, data) => {
+      const storage = {
+        id: String(getRandomId()) as StorageId,
+        userId,
+        ...data
+      };
+      tables.storages.push(storage);
+      return storage;
+    },
+    delete: async id => {
+      const contains = tables.storages.some(storage => storage.id === id);
+      if (contains) {
+        tables.storages = tables.storages.filter(storage => storage.id !== id);
+      }
+      return contains;
+    },
+    edit: async (id, data) => {
+      const original = tables.storages.find(storage => storage.id === id);
+      if (original) {
+        const edited = original;
+        if (data.name) edited.name = data.name;
+        if (data.initialBalance) edited.initialBalance = data.initialBalance;
 
-    tables.storages.push(storage);
-    return storage;
-  },
-  deleteStorage: async (userId: string, id: string) => {
-    const storage = tables.storages.find(storage => storage.id === id && storage.userId === userId);
-    if (!storage) return false;
-
-    tables.storages = tables.storages.filter(storage => storage.id !== id);
-    return true;
-  },
-  getStorages: async (userId: string) => {
-    return tables.storages.filter(storage => storage.userId === userId);
-  },
-  getStorage: async (userId: string, id: string) => {
-    return tables.storages.find(storage => storage.id === id && storage.userId === userId) || undefined;
-  },
-  editStorage: async (userId: string, id: string, { name, initialBalance }) => {
-    const storage = tables.storages.find(storage => storage.id === id && storage.userId === userId);
-    if (!storage) return undefined;
-
-    if (name !== undefined) storage.name = name;
-    if (initialBalance !== undefined) storage.initialBalance = initialBalance;
-
-    return storage;
+        tables.storages = tables.storages.filter(storage => storage.id !== id).concat(edited);
+        return edited;
+      }
+    }
   }
 };

@@ -5,13 +5,14 @@ import fastifySession from "@fastify/session";
 import { DatabaseAdapter } from "./types/DatabaseAdapter";
 import { database } from "./utils/mockDatabase";
 import { storageRoutes } from "./api/resources/storages/storages";
+import { UserId } from "./types/types";
 
 declare module "fastify" {
   interface FastifyInstance {
     database: DatabaseAdapter
   }
   export interface Session {
-    userId?: string
+    userId?: UserId
   }
 }
 

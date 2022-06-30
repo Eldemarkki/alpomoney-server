@@ -1,20 +1,20 @@
 import { Static, TProperties, TSchema } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
 import { UndefinedToUnknown } from "fastify/types/type-provider";
-import { AccessSingleResource, AccessSingleResourceType, WithIds, WithoutIds } from "../../../../types/types";
+import { AccessSingleResource, AccessSingleResourceType, UserId, WithIds, WithoutIds } from "../../../../types/types";
 import { requireAuthentication } from "../../../../utils/authUtils";
 import { NotFoundError } from "../../../../utils/errors";
 
-export const editRoute = <T extends TProperties & TSchema>(
+export const editRoute = <ResourceType extends TProperties & TSchema, ResourceId>(
   validator: TSchema,
   edit: (
-    userId: string,
-    id: string,
-    data: WithoutIds<UndefinedToUnknown<keyof T extends never ? unknown : Static<T>>>
-  ) => Promise<WithIds<Static<T>> | undefined>
+    userId: UserId,
+    id: ResourceId,
+    data: WithoutIds<UndefinedToUnknown<keyof ResourceType extends never ? unknown : Static<ResourceType>>>
+  ) => Promise<WithIds<Static<ResourceType>, ResourceId> | undefined>
 ) => {
   const route: FastifyPluginAsync = async fastify => {
-    fastify.put<{ Params: AccessSingleResourceType, Body: T }>(
+    fastify.put<{ Params: AccessSingleResourceType<ResourceId>, Body: ResourceType }>(
       "/:id",
       {
         schema: {

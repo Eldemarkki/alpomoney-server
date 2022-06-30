@@ -1,7 +1,7 @@
 import { Static, Type } from "@sinclair/typebox";
 import { beforeEach, describe, expect, test } from "vitest";
 import { build } from "../../../app";
-import { WithIds } from "../../../types/types";
+import { Brand, UserId, WithIds } from "../../../types/types";
 import { signUp } from "../../auth/authTestUtils";
 import { idorProtectedResource } from "./idorProtectedResource";
 
@@ -9,21 +9,24 @@ const Resource = Type.Object({
   location: Type.String()
 });
 
+const ResourceEdit = Type.Object({
+  location: Type.Optional(Type.String())
+});
+
 type ResourceType = Static<typeof Resource>
+type LocationId = Brand<string, "LocationId">;
 
 let runningId = 0;
 const getRandomId = () => String(runningId++);
 
-let resources: WithIds<ResourceType>[] = [];
+let resources: WithIds<ResourceType, LocationId>[] = [];
 
 describe("idorProtectedResource", async () => {
   const fastify = await build();
-  let user1 = { id: "", cookie: "" };
-  let user2 = { id: "", cookie: "" };
-  await fastify.register(idorProtectedResource(Resource, {
+  await fastify.register(idorProtectedResource(Resource, ResourceEdit, {
     create: async (userId, data) => {
       const r = {
-        id: getRandomId(),
+        id: getRandomId() as LocationId,
         userId,
         ...data
       };
@@ -56,15 +59,15 @@ describe("idorProtectedResource", async () => {
     }
   }), { prefix: "/resources" });
 
-  user1 = await signUp(fastify, "user1", "password1");
-  user2 = await signUp(fastify, "user2", "password2");
+  const user1 = await signUp(fastify, "user1", "password1");
+  const user2 = await signUp(fastify, "user2", "password2");
 
   beforeEach(async () => {
     runningId = 0;
     resources = [];
   });
 
-  const createResource = async (user: { id: string, cookie: string }, data: ResourceType) => {
+  const createResource = async (user: { id: UserId, cookie: string }, data: ResourceType) => {
     const response = await fastify.inject({
       method: "POST",
       url: "/resources",
@@ -76,7 +79,7 @@ describe("idorProtectedResource", async () => {
 
     return {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      id: response.json().id as string,
+      id: response.json().id as LocationId,
       userId: user.id,
       ...data
     };
