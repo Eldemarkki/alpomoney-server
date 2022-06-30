@@ -27,8 +27,8 @@ const build = async (opts: FastifyServerOptions = {}) => {
 
   await app.register(fastifyCookie);
   await app.register(fastifySession, {
-    secret: "SOMETHING_VERY_VERY_VERY_VERY_VERY_SECRET_1234", // TODO: Move to .env
-    cookieName: "alpomoneySessionId", // TODO: Move to .env
+    secret: process.env.SESSION_SECRET || "REPLACE_THIS_WITH_SOMETHING_SECRET_123456789",
+    cookieName: process.env.COOKIE_NAME || "alpomoneySessionId",
     cookie: {
       secure: false,
       httpOnly: true,

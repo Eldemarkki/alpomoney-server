@@ -3,7 +3,7 @@ import { test, expect, afterEach, describe, beforeEach } from "vitest";
 import { build } from "../../app";
 import { getUserIdPlugin } from "../../utils/sessionUtils";
 import { database } from "../../utils/mockDatabase";
-import { UserId } from "../../types/types";
+import { hasKey } from "../../types/types";
 
 describe("signup", () => {
   beforeEach(async () => {
@@ -81,10 +81,12 @@ describe("signup", () => {
       }
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const userId = signupResponse.json().id as UserId;
+    const responseData: unknown = signupResponse.json();
+    if (!hasKey(responseData, "id") || typeof responseData.id !== "string") {
+      throw new Error("This should never happen");
+    }
 
-    expect(sessionResponse.json()).toEqual({ userId });
+    expect(sessionResponse.json()).toEqual({ userId: responseData.id });
   });
 
   test("shouldn't return userId in session if user already exists", async () => {

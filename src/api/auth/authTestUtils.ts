@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { FastifyInstance } from "fastify";
-import { UserId } from "../../types/types";
+import { hasKey, UserId } from "../../types/types";
 
 export const signUp = async (app: FastifyInstance, username: string, password: string) => {
   const response = await app.inject({
@@ -12,8 +11,13 @@ export const signUp = async (app: FastifyInstance, username: string, password: s
     }
   });
 
+  const responseData: unknown = response.json();
+  if (!hasKey(responseData, "id") || typeof responseData.id !== "string") {
+    throw new Error("This should never happen");
+  }
+
   return {
-    id: response.json().id as UserId,
+    id: responseData.id as UserId,
     cookie: response.headers["set-cookie"]?.toString() || ""
   };
 };

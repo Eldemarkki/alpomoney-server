@@ -109,7 +109,6 @@
       "error",
       { "varsIgnorePattern": "^_" }
     ],
-    "@typescript-eslint/require-await": "off",
-    "@typescript-eslint/ban-ts-comment": "off" // TOOD: This should be removed after the initial project setup is done.
+    "@typescript-eslint/require-await": "off"
   }
 }

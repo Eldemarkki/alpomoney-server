@@ -1,7 +1,7 @@
 import { Static, Type } from "@sinclair/typebox";
 import { beforeEach, describe, expect, test } from "vitest";
 import { build } from "../../../app";
-import { Brand, UserId, WithIds } from "../../../types/types";
+import { Brand, hasKey, UserId, WithIds } from "../../../types/types";
 import { signUp } from "../../auth/authTestUtils";
 import { idorProtectedResource } from "./idorProtectedResource";
 
@@ -77,9 +77,13 @@ describe("idorProtectedResource", async () => {
       payload: data
     });
 
+    const responseData: unknown = response.json();
+    if (!hasKey(responseData, "id") || typeof responseData.id !== "string") {
+      throw new Error("This should never happen");
+    }
+
     return {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      id: response.json().id as LocationId,
+      id: responseData.id,
       userId: user.id,
       ...data
     };

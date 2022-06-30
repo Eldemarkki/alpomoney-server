@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { build } from "../../app";
 import { getUserIdPlugin } from "../../utils/sessionUtils";
 import { database } from "../../utils/mockDatabase";
-import { UserId } from "../../types/types";
+import { hasKey } from "../../types/types";
 
 describe("login", () => {
   beforeEach(async () => {
@@ -86,10 +86,12 @@ describe("login", () => {
       }
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const userId = loginResponse.json().id as UserId;
+    const responseData: unknown = loginResponse.json();
+    if (!hasKey(responseData, "id") || typeof responseData.id !== "string") {
+      throw new Error("This should never happen");
+    }
 
-    expect(sessionResponse.json()).toEqual({ userId });
+    expect(sessionResponse.json()).toEqual({ userId: responseData.id });
   });
 
   test("when using wrong credentials, cookie should not be returned", async () => {
