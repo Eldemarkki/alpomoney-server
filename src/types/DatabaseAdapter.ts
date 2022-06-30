@@ -19,10 +19,10 @@ export type Sink = WithIds<{
 
 export interface Resource<ResourceType, ResourceId> {
   create: (userId: UserId, data: WithoutIds<ResourceType>) => Promise<ResourceType>,
-  delete: (id: ResourceId) => Promise<boolean>,
-  getAll: () => Promise<ResourceType[]>,
-  get: (id: ResourceId) => Promise<ResourceType | undefined>,
-  edit: (id: ResourceId, data: WithoutIds<ResourceType>) => Promise<ResourceType | undefined>
+  delete: (userId: UserId, id: ResourceId) => Promise<boolean>,
+  getAll: (userId: UserId) => Promise<ResourceType[]>,
+  get: (userId: UserId, id: ResourceId) => Promise<ResourceType | undefined>,
+  edit: (userId: UserId, id: ResourceId, data: WithoutIds<ResourceType>) => Promise<ResourceType | undefined>
 }
 
 export interface DatabaseAdapter {

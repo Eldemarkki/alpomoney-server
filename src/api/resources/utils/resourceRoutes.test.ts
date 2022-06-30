@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, test } from "vitest";
 import { build } from "../../../app";
 import { Brand, hasKey, UserId, WithIds } from "../../../types/types";
 import { signUp } from "../../auth/authTestUtils";
-import { idorProtectedResource } from "./idorProtectedResource";
+import { resourcePlugin } from "./resourceRoutes";
 
 const Resource = Type.Object({
   location: Type.String()
@@ -21,41 +21,38 @@ const getRandomId = () => String(runningId++);
 
 let resources: WithIds<ResourceType, LocationId>[] = [];
 
-describe("idorProtectedResource", async () => {
+describe("resourceRoutes", async () => {
   const fastify = await build();
-  await fastify.register(idorProtectedResource(Resource, ResourceEdit, {
+  await fastify.register(resourcePlugin<ResourceType, LocationId>(Resource, ResourceEdit, {
     create: async (userId, data) => {
-      const r = {
-        id: getRandomId() as LocationId,
-        userId,
-        ...data
-      };
-      resources.push(r);
-      return r;
+      const id = getRandomId() as LocationId;
+      resources.push({ id, userId, ...data });
+      return { id, userId, ...data };
     },
-    delete_UNSAFE: async id => {
-      const contains = resources.some(r => r.id === id);
-      if (contains) {
-        resources = resources.filter(r => r.id !== id);
+    get: async (userId, id) => {
+      return resources.find(r => r.id === id && r.userId === userId);
+    },
+    getAll: async userId => {
+      return resources.filter(r => r.userId === userId);
+    },
+    edit: async (userId, id, data) => {
+      const resource = resources.find(r => r.id === id && r.userId === userId);
+      if (!resource) {
+        return;
       }
-      return contains;
-    },
-    get_UNSAFE: async id => {
-      return resources.find(r => r.id === id);
-    },
-    getAll_UNSAFE: async () => {
-      return resources;
-    },
-    edit_UNSAFE: async (id, data) => {
-      const original = resources.find(r => r.id === id);
-      if (original) {
-        const edited = original;
-        if (data.location) edited.location = data.location;
 
-        resources = resources.filter(r => r.id !== id).concat(edited);
-        return edited;
+      const newResource = { ...resource, ...data };
+      const index = resources.indexOf(resource);
+      resources[index] = newResource;
+      return newResource;
+    },
+    delete: async (userId, id) => {
+      const index = resources.findIndex(r => r.id === id && r.userId === userId);
+      if (index === -1) {
+        return false;
       }
-      return undefined;
+      resources.splice(index, 1);
+      return true;
     }
   }), { prefix: "/resources" });
 

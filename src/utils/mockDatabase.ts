@@ -46,71 +46,66 @@ export const database: DatabaseAdapter = {
     tables.storages = [];
   },
   storage: {
-    get: async id => {
-      return tables.storages.find(storage => storage.id === id);
-    },
-    getAll: async () => {
-      return tables.storages;
-    },
     create: async (userId, data) => {
       const storage = {
-        id: String(getRandomId()) as StorageId,
+        id: getRandomId().toString() as StorageId,
         userId,
         ...data
       };
       tables.storages.push(storage);
       return storage;
     },
-    delete: async id => {
-      const contains = tables.storages.some(storage => storage.id === id);
-      if (contains) {
-        tables.storages = tables.storages.filter(storage => storage.id !== id);
-      }
-      return contains;
-    },
-    edit: async (id, data) => {
-      const original = tables.storages.find(storage => storage.id === id);
-      if (original) {
-        const edited = original;
-        if (data.name) edited.name = data.name;
-        if (data.initialBalance) edited.initialBalance = data.initialBalance;
+    delete: async (userId, id) => {
+      const index = tables.storages.findIndex(storage => storage.id === id && storage.userId === userId);
+      if (index === -1) return false;
 
-        tables.storages = tables.storages.filter(storage => storage.id !== id).concat(edited);
-        return edited;
-      }
+      tables.storages.splice(index, 1);
+      return true;
+    },
+    getAll: async userId => {
+      return tables.storages.filter(storage => storage.userId === userId);
+    },
+    get: async (userId, id) => {
+      return tables.storages.find(storage => storage.id === id && storage.userId === userId);
+    },
+    edit: async (userId, id, data) => {
+      const resource = tables.storages.find(storage => storage.id === id && storage.userId === userId);
+      if (!resource) return undefined;
+
+      if (data.name !== undefined) resource.name = data.name;
+      if (data.initialBalance !== undefined) resource.initialBalance = data.initialBalance;
+      return resource;
     }
   },
   sink: {
     create: async (userId, data) => {
       const sink = {
-        id: String(getRandomId()) as SinkId,
+        id: getRandomId().toString() as SinkId,
         userId,
         ...data
       };
+      tables.sinks.push(sink);
       return sink;
     },
-    get: async id => {
-      return tables.sinks.find(sink => sink.id === id);
-    },
-    getAll: async () => {
-      return tables.sinks;
-    },
-    delete: async id => {
-      const contains = tables.sinks.some(sink => sink.id === id);
-      if (contains) {
-        tables.sinks = tables.sinks.filter(sink => sink.id !== id);
-      }
-      return contains;
-    },
-    edit: async (id, data) => {
-      const original = tables.sinks.find(sink => sink.id === id);
-      if (original) {
-        const edited = original;
-        if (data.name) edited.name = data.name;
+    delete: async (userId, id) => {
+      const index = tables.sinks.findIndex(sink => sink.id === id && sink.userId === userId);
+      if (index === -1) return false;
 
-        tables.sinks = tables.sinks.filter(sink => sink.id !== id).concat(edited);
-        return edited;
-      }
+      tables.sinks.splice(index, 1);
+      return true;
+    },
+    getAll: async userId => {
+      return tables.sinks.filter(sink => sink.userId === userId);
+    },
+    get: async (userId, id) => {
+      return tables.sinks.find(sink => sink.id === id && sink.userId === userId);
+    },
+    edit: async (userId, id, data) => {
+      const resource = tables.sinks.find(sink => sink.id === id && sink.userId === userId);
+      if (!resource) return undefined;
+
+      if (data.name !== undefined) resource.name = data.name;
+      return resource;
     }
   }
 };
