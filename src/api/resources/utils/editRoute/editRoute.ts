@@ -11,7 +11,7 @@ export const editRoute = <T extends TProperties & TSchema>(
     userId: string,
     id: string,
     data: WithoutIds<UndefinedToUnknown<keyof T extends never ? unknown : Static<T>>>
-  ) => Promise<WithIds<Static<T>> | null>
+  ) => Promise<WithIds<Static<T>> | undefined>
 ) => {
   const route: FastifyPluginAsync = async fastify => {
     fastify.put<{ Params: AccessSingleResourceType, Body: T }>(

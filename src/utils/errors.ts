@@ -5,7 +5,7 @@ export class ApiError extends Error {
 }
 
 export class NotFoundError extends ApiError {
-  constructor(resourceName: string | null = null, id: string | null = null) {
+  constructor(resourceName: string | undefined = undefined, id: string | undefined = undefined) {
     if (resourceName && id) {
       super(`Resource '${resourceName}' (id='${id}') was not found`, 404);
     }

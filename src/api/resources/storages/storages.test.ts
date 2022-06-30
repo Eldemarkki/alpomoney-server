@@ -1,53 +1,16 @@
-import { FastifyInstance } from "fastify";
 import { beforeEach, describe, expect, test } from "vitest";
 import { build } from "../../../app";
 import { database } from "../../../utils/mockDatabase";
+import { signUp } from "../../auth/authTestUtils";
 
-describe("storages", () => {
-  let user1: {
-    id: string,
-    cookie: string
-  } = {
-    id: "",
-    cookie: ""
-  };
-
-  let user2: {
-    id: string,
-    cookie: string
-  } = {
-    id: "",
-    cookie: ""
-  };
-
-  // This can be ignored, because it will always be set up in beforeEach
-  // @ts-ignore
-  let app: FastifyInstance = null;
+describe("storages", async () => {
+  const app = await build();
+  const user1 = await signUp(app, "user1", "password1");
+  const user2 = await signUp(app, "user2", "password2");
 
   beforeEach(async () => {
     await database.reset();
-    app = await build();
-    user1 = await signUp("user1", "password1");
-    user2 = await signUp("user2", "password2");
   });
-
-  const signUp = async (username: string, password: string) => {
-    const response = await app.inject({
-      method: "POST",
-      url: "/auth/signup",
-      payload: {
-        username,
-        password
-      }
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const userId = response.json().id as string;
-    return {
-      id: userId,
-      cookie: response.headers["set-cookie"]?.toString() || ""
-    };
-  };
 
   test("should be able to create storages", async () => {
     const response = await app.inject({

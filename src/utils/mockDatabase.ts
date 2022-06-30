@@ -16,7 +16,7 @@ const getRandomId = () => runningId++;
 export const database: DatabaseAdapter = {
   signUp: async (username: string, password: string) => {
     if (tables.users.find(user => user.username === username)) {
-      return null;
+      return undefined;
     }
 
     const user = {
@@ -34,12 +34,13 @@ export const database: DatabaseAdapter = {
   },
   login: async (username: string, password: string) => {
     const user = tables.users.find(user => user.username === username && user.passwordHash === password);
-    if (!user) return null;
+    if (!user) return undefined;
 
     return { username: user.username, id: user.id };
   },
   reset: async () => {
     tables.users = [];
+    tables.storages = [];
   },
   createStorage: async (userId, data) => {
     const storage: Storage = {
@@ -63,11 +64,11 @@ export const database: DatabaseAdapter = {
     return tables.storages.filter(storage => storage.userId === userId);
   },
   getStorage: async (userId: string, id: string) => {
-    return tables.storages.find(storage => storage.id === id && storage.userId === userId) || null;
+    return tables.storages.find(storage => storage.id === id && storage.userId === userId) || undefined;
   },
   editStorage: async (userId: string, id: string, { name, initialBalance }) => {
     const storage = tables.storages.find(storage => storage.id === id && storage.userId === userId);
-    if (!storage) return null;
+    if (!storage) return undefined;
 
     if (name !== undefined) storage.name = name;
     if (initialBalance !== undefined) storage.initialBalance = initialBalance;

@@ -3,7 +3,7 @@ import { AccessSingleResource, AccessSingleResourceType } from "../../../../type
 import { requireAuthentication } from "../../../../utils/authUtils";
 import { NotFoundError } from "../../../../utils/errors";
 
-export const getSingleRoute = <T>(get: (userId: string, id: string) => Promise<T>) => {
+export const getSingleRoute = <T>(get: (userId: string, id: string) => Promise<T | undefined>) => {
   const route: FastifyPluginAsync = async fastify => {
     fastify.get<{ Params: AccessSingleResourceType }>("/:id", {
       schema: {

@@ -16,13 +16,13 @@ export interface Storage {
 }
 
 export interface DatabaseAdapter {
-  signUp: (email: string, password: string) => Promise<User | null>,
-  login: (email: string, password: string) => Promise<User | null>,
+  signUp: (email: string, password: string) => Promise<User | undefined>,
+  login: (email: string, password: string) => Promise<User | undefined>,
   reset: () => Promise<void>,
   createStorage: (userId: string, data: WithoutIds<Storage>) => Promise<Storage>,
   deleteStorage: (userId: string, id: string) => Promise<boolean>,
   getStorages: (userId: string) => Promise<Storage[]>,
-  getStorage: (userId: string, id: string) => Promise<Storage | null>,
+  getStorage: (userId: string, id: string) => Promise<Storage | undefined>,
   editStorage: (userId: string, id: string, data: Partial<WithoutIds<Storage>>)
-    => Promise<Storage | null>
+    => Promise<Storage | undefined>
 }
