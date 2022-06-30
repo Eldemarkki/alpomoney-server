@@ -1,4 +1,4 @@
-import { StorageId, UserId, WithIds, WithoutIds } from "./types";
+import { SinkId, StorageId, UserId, WithIds, WithoutIds } from "./types";
 
 export interface UserWithPasswordHash {
   id: UserId,
@@ -13,6 +13,10 @@ export type Storage = WithIds<{
   initialBalance: number
 }, StorageId>
 
+export type Sink = WithIds<{
+  name: string
+}, SinkId>;
+
 export interface Resource<ResourceType, ResourceId> {
   create: (userId: UserId, data: WithoutIds<ResourceType>) => Promise<ResourceType>,
   delete: (id: ResourceId) => Promise<boolean>,
@@ -25,5 +29,6 @@ export interface DatabaseAdapter {
   signUp: (email: string, password: string) => Promise<User | undefined>,
   login: (email: string, password: string) => Promise<User | undefined>,
   reset: () => Promise<void>,
-  storage: Resource<Storage, StorageId>
+  storage: Resource<Storage, StorageId>,
+  sink: Resource<Sink, SinkId>
 }

@@ -1,14 +1,16 @@
-import { DatabaseAdapter, Storage, UserWithPasswordHash } from "../types/DatabaseAdapter";
-import { StorageId, UserId } from "../types/types";
+import { DatabaseAdapter, Sink, Storage, UserWithPasswordHash } from "../types/DatabaseAdapter";
+import { SinkId, StorageId, UserId } from "../types/types";
 
 interface Tables {
   users: UserWithPasswordHash[],
-  storages: Storage[]
+  storages: Storage[],
+  sinks: Sink[]
 }
 
 const tables: Tables = {
   users: [],
-  storages: []
+  storages: [],
+  sinks: []
 };
 
 let runningId = 0;
@@ -74,6 +76,39 @@ export const database: DatabaseAdapter = {
         if (data.initialBalance) edited.initialBalance = data.initialBalance;
 
         tables.storages = tables.storages.filter(storage => storage.id !== id).concat(edited);
+        return edited;
+      }
+    }
+  },
+  sink: {
+    create: async (userId, data) => {
+      const sink = {
+        id: String(getRandomId()) as SinkId,
+        userId,
+        ...data
+      };
+      return sink;
+    },
+    get: async id => {
+      return tables.sinks.find(sink => sink.id === id);
+    },
+    getAll: async () => {
+      return tables.sinks;
+    },
+    delete: async id => {
+      const contains = tables.sinks.some(sink => sink.id === id);
+      if (contains) {
+        tables.sinks = tables.sinks.filter(sink => sink.id !== id);
+      }
+      return contains;
+    },
+    edit: async (id, data) => {
+      const original = tables.sinks.find(sink => sink.id === id);
+      if (original) {
+        const edited = original;
+        if (data.name) edited.name = data.name;
+
+        tables.sinks = tables.sinks.filter(sink => sink.id !== id).concat(edited);
         return edited;
       }
     }
