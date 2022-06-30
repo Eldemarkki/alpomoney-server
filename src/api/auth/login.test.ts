@@ -7,11 +7,11 @@ import { hasKey } from "../../types/types";
 
 describe("login", async () => {
   const app = await build();
-  await database.signUp("myUsername", "myPassword");
   await app.register(getUserIdPlugin, { prefix: "/session" });
 
   beforeEach(async () => {
     await database.reset();
+    await database.signUp("myUsername", "myPassword");
   });
 
   test("should return 400 bad request if password is missing", async () => {

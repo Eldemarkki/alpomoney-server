@@ -63,7 +63,6 @@ describe("signup", async () => {
   });
 
   test("should return userId in session", async () => {
-    const app = await build();
     const signupResponse = await signUp(app, "myUsername", "myPassword");
 
     const sessionResponse = await app.inject({
@@ -78,14 +77,28 @@ describe("signup", async () => {
   });
 
   test("shouldn't return userId in session if user already exists", async () => {
-    await signUp(app, "myUsername", "myPassword");
-    const signupResponse = await signUp(app, "myUsername", "myPassword");
+    await app.inject({
+      method: "POST",
+      url: "/auth/signup",
+      payload: {
+        username: "myUsername",
+        password: "myPassword"
+      }
+    });
+    const signupResponse = await app.inject({
+      method: "POST",
+      url: "/auth/signup",
+      payload: {
+        username: "myUsername",
+        password: "myPassword"
+      }
+    });
 
     const sessionResponse = await app.inject({
       method: "GET",
       url: "/session",
       headers: {
-        cookie: signupResponse.cookie
+        cookie: signupResponse.headers["set-cookie"]
       }
     });
 
