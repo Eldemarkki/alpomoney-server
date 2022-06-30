@@ -1,11 +1,12 @@
 import { beforeEach, describe, expect, Mock, test, vi } from "vitest";
 import { build } from "../../../../app";
+import { UserId } from "../../../../types/types";
 import { signUp } from "../../../auth/authTestUtils";
 import { getAllRoute } from "./getAllRoute";
 
 describe("getAllRoute", async () => {
   const app = await build();
-  let fn: Mock<[string], number[]>;
+  let fn: Mock<[UserId], number[]>;
 
   beforeEach(async () => {
     fn = vi.fn();

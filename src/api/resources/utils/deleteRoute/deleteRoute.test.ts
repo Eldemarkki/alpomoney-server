@@ -1,11 +1,12 @@
 import { beforeEach, describe, expect, Mock, test, vi } from "vitest";
 import { build } from "../../../../app";
+import { UserId } from "../../../../types/types";
 import { signUp } from "../../../auth/authTestUtils";
 import { deleteRoute } from "./deleteRoute";
 
 describe("deleteRoute", async () => {
   const app = await build();
-  let fn: Mock<[string, string], boolean>;
+  let fn: Mock<[UserId, unknown], boolean>;
   await app.register(deleteRoute(async (userId, id) => {
     fn(userId, id);
     return id === "1";

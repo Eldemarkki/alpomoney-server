@@ -1,7 +1,7 @@
 import { Static, Type } from "@sinclair/typebox";
 import { beforeEach, describe, expect, Mock, test, vi } from "vitest";
 import { build } from "../../../../app";
-import { Brand, WithIds } from "../../../../types/types";
+import { Brand, UserId, WithIds } from "../../../../types/types";
 import { createRoute } from "./createRoute";
 import { signUp } from "../../../auth/authTestUtils";
 
@@ -16,7 +16,7 @@ const getRandomId = () => String(runningId++);
 
 describe("createRoute", async () => {
   const app = await build();
-  let fn: Mock<[string, Static<typeof Validator>], WithIds<Static<typeof Validator>, PriceTagId>>;
+  let fn: Mock<[UserId, Static<typeof Validator>], WithIds<Static<typeof Validator>, PriceTagId>>;
   await app.register(createRoute<typeof Validator, PriceTagId>(Validator, async (userId, data) => {
     fn(userId, data);
     return {
