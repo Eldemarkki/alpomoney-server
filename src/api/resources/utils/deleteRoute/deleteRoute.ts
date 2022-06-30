@@ -4,7 +4,10 @@ import { requireAuthentication } from "../../../../utils/authUtils";
 import { NotFoundError } from "../../../../utils/errors";
 
 
-export const deleteRoute = <ResourceId>(deleteResource: (userId: UserId, id: ResourceId) => Promise<boolean>) => {
+export const deleteRoute = <ResourceId>(
+  deleteResource: (userId: UserId, id: ResourceId) => Promise<boolean>,
+  resourceName?: string
+) => {
   const route: FastifyPluginAsync = async fastify => {
     fastify.delete<{ Params: AccessSingleResourceType<ResourceId> }>("/:id", {
       schema: {
@@ -16,8 +19,7 @@ export const deleteRoute = <ResourceId>(deleteResource: (userId: UserId, id: Res
 
       const success = await deleteResource(userId, id);
 
-      // TODO: Get the "Storage" text as a parameter
-      if (!success) throw new NotFoundError("Storage", id);
+      if (!success) throw new NotFoundError(resourceName, id);
 
       await reply.send();
     });

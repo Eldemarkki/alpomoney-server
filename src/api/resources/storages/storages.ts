@@ -22,5 +22,5 @@ export const storageRoutes: FastifyPluginAsync = async fastify => {
     delete_UNSAFE: database.storage.delete,
     edit_UNSAFE: database.storage.edit,
     create: database.storage.create
-  }));
+  }, "Storage"));
 };

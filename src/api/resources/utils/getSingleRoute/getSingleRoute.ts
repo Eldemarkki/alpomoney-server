@@ -4,7 +4,8 @@ import { requireAuthentication } from "../../../../utils/authUtils";
 import { NotFoundError } from "../../../../utils/errors";
 
 export const getSingleRoute = <ResourceType, ResourceId>(
-  get: (userId: UserId, id: ResourceId) => Promise<ResourceType | undefined>
+  get: (userId: UserId, id: ResourceId) => Promise<ResourceType | undefined>,
+  resourceName?: string
 ) => {
   const route: FastifyPluginAsync = async fastify => {
     fastify.get<{ Params: AccessSingleResourceType<ResourceId> }>("/:id", {
@@ -17,8 +18,7 @@ export const getSingleRoute = <ResourceType, ResourceId>(
 
       const resource = await get(userId, id);
 
-      // TODO: Get the "Resource" text as a parameter
-      if (!resource) throw new NotFoundError("Resource", id);
+      if (!resource) throw new NotFoundError(resourceName, id);
 
       await reply.send(resource);
     });

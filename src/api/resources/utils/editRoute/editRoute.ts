@@ -11,7 +11,8 @@ export const editRoute = <ResourceType extends TProperties & TSchema, ResourceId
     userId: UserId,
     id: ResourceId,
     data: WithoutIds<UndefinedToUnknown<keyof ResourceType extends never ? unknown : Static<ResourceType>>>
-  ) => Promise<WithIds<Static<ResourceType>, ResourceId> | undefined>
+  ) => Promise<WithIds<Static<ResourceType>, ResourceId> | undefined>,
+  resourceName?: string
 ) => {
   const route: FastifyPluginAsync = async fastify => {
     fastify.put<{ Params: AccessSingleResourceType<ResourceId>, Body: ResourceType }>(
@@ -28,7 +29,7 @@ export const editRoute = <ResourceType extends TProperties & TSchema, ResourceId
         const { id } = request.params;
         const storage = await edit(userId, id, request.body);
 
-        if (!storage) throw new NotFoundError("Storage", id);
+        if (!storage) throw new NotFoundError(resourceName, id);
 
         await reply.send(storage);
       });
