@@ -40,7 +40,7 @@ export type RecurringTransaction = WithIds<{
   storageId: StorageId,
   category: string,
   frequency: RecurringTransactionFrequency,
-  startDate: string
+  startDate: number
 }, RecurringTransactionId>;
 
 export interface Resource<ResourceType, ResourceId> {

@@ -18,7 +18,7 @@ const RecurringTransactionValidator = Type.Object({
     "monthly": "monthly",
     "yearly": "yearly"
   }),
-  startDate: Type.String() // TODO: Custom validator
+  startDate: Type.Number() // TODO: Custom validator
 });
 
 const EditRecurringTransactionBody = Type.Object({
@@ -34,7 +34,7 @@ const EditRecurringTransactionBody = Type.Object({
     "monthly": "monthly",
     "yearly": "yearly"
   })),
-  startDate: Type.Optional(Type.String()) // TODO: Custom validator
+  startDate: Type.Optional(Type.Number()) // TODO: Custom validator
 });
 
 export const recurringTransactionRoutes: FastifyPluginAsync = async fastify => {
