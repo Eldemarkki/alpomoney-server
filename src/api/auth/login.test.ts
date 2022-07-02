@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { beforeEach, describe, expect, test } from "vitest";
 import { build } from "../../app";
 import { getUserIdPlugin } from "../../utils/sessionUtils";
-import { database } from "../../utils/mockDatabase";
+import { database } from "../../database/mockDatabase";
 import { hasKey } from "../../types/types";
 
 describe("login", async () => {

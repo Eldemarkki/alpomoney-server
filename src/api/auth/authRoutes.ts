@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from "fastify";
 import { Type, Static } from "@sinclair/typebox";
-import { database } from "../../utils/mockDatabase";
+import { database } from "../../database/mockDatabase";
 import { InvalidCredentialsError, UserAlreadyExistsError } from "../../utils/errors";
 import { requireAuthentication } from "../../utils/authUtils";
 

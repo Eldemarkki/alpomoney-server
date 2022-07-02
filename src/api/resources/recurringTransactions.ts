@@ -1,6 +1,6 @@
 import { Type } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
-import { database } from "../../utils/mockDatabase";
+import { database } from "../../database/mockDatabase";
 import { resourcePlugin } from "./utils/resourceRoutes";
 
 const RecurringTransactionValidator = Type.Object({

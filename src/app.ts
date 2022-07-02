@@ -2,7 +2,7 @@ import fastify, { FastifyServerOptions } from "fastify";
 import { authRoutes } from "./api/auth/authRoutes";
 import fastifyCookie from "@fastify/cookie";
 import fastifySession from "@fastify/session";
-import { database } from "./utils/mockDatabase";
+import { database as mockDatabase } from "./database/mockDatabase";
 import { storageRoutes } from "./api/resources/storages";
 import { sinkRoutes } from "./api/resources/sinks";
 import { transactionRoutes } from "./api/resources/transactions";
@@ -26,7 +26,7 @@ const build = async (opts: FastifyServerOptions = {}) => {
     bodyLimit: 1024 * 1024 * 10
   });
 
-  app.decorate("database", database);
+  app.decorate("database", mockDatabase);
 
   await app.register(fastifyCookie);
   await app.register(fastifySession, {

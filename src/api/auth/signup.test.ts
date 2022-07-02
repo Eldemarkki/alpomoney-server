@@ -1,7 +1,7 @@
 import { test, expect, describe, beforeEach } from "vitest";
 import { build } from "../../app";
 import { getUserIdPlugin } from "../../utils/sessionUtils";
-import { database } from "../../utils/mockDatabase";
+import { database } from "../../database/mockDatabase";
 import { signUp } from "../../api/auth/authTestUtils";
 
 describe("signup", async () => {

@@ -7,7 +7,7 @@ import {
 } from "@alpomoney/shared";
 import { RecurringTransactionId, SinkId, StorageId, TransactionId, UserId } from "@alpomoney/shared";
 import { DatabaseAdapter } from "../types/DatabaseAdapter";
-import { NotFoundError } from "./errors";
+import { NotFoundError } from "../utils/errors";
 
 interface Tables {
   users: UserWithPasswordHash[],
