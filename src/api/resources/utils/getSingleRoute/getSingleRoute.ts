@@ -1,5 +1,6 @@
+import { UserId } from "@alpomoney/shared";
 import { FastifyPluginAsync } from "fastify";
-import { AccessSingleResource, AccessSingleResourceType, UserId } from "../../../../types/types";
+import { AccessSingleResource, AccessSingleResourceType } from "../../../../types/types";
 import { requireAuthentication } from "../../../../utils/authUtils";
 import { NotFoundError } from "../../../../utils/errors";
 

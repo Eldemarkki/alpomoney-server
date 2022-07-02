@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from "fastify";
-import { UserId } from "../../../../types/types";
+import { UserId } from "@alpomoney/shared";
 import { requireAuthentication } from "../../../../utils/authUtils";
 
 export const getAllRoute = <T>(getAll: (userId: UserId) => Promise<T[]>) => {

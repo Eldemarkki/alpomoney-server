@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Eldemarkki/alpomoney-server#readme",
   "dependencies": {
+    "@alpomoney/shared": "^0.0.3",
     "@fastify/cookie": "^7.0.0",
     "@fastify/session": "^9.0.0",
     "@sinclair/typebox": "^0.24.1",

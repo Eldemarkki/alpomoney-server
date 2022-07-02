@@ -1,5 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { hasKey, UserId } from "../../types/types";
+import { UserId } from "@alpomoney/shared";
+import { hasKey } from "../../types/types";
 
 export const signUp = async (app: FastifyInstance, username: string, password: string) => {
   const response = await app.inject({

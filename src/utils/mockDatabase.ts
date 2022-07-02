@@ -1,12 +1,12 @@
 import {
-  DatabaseAdapter,
   RecurringTransaction,
   Sink,
   Storage,
   Transaction,
   UserWithPasswordHash
-} from "../types/DatabaseAdapter";
-import { RecurringTransactionId, SinkId, StorageId, TransactionId, UserId } from "../types/types";
+} from "@alpomoney/shared";
+import { RecurringTransactionId, SinkId, StorageId, TransactionId, UserId } from "@alpomoney/shared";
+import { DatabaseAdapter } from "../types/DatabaseAdapter";
 import { NotFoundError } from "./errors";
 
 interface Tables {
@@ -184,6 +184,7 @@ export const database: DatabaseAdapter = {
         resource.sinkId = data.sinkId;
       }
       if (data.category !== undefined) resource.category = data.category;
+      if (data.createdAt !== undefined) resource.createdAt = data.createdAt;
 
       tables.transactions[tables.transactions.indexOf(resource)] = resource;
 
@@ -232,7 +233,8 @@ export const database: DatabaseAdapter = {
       );
       if (!resource) return undefined;
 
-      if (data.description !== undefined) resource.description = data.description;
+
+      if (data.name !== undefined) resource.name = data.name;
       if (data.amount !== undefined) resource.amount = data.amount;
       if (data.storageId !== undefined) {
         if (!tables.storages.find(storage => storage.id === data.storageId && storage.userId === userId)) {

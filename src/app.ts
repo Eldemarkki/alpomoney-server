@@ -5,7 +5,7 @@ import fastifySession from "@fastify/session";
 import { DatabaseAdapter } from "./types/DatabaseAdapter";
 import { database } from "./utils/mockDatabase";
 import { storageRoutes } from "./api/resources/storages";
-import { UserId } from "./types/types";
+import { UserId } from "@alpomoney/shared";
 import { sinkRoutes } from "./api/resources/sinks";
 import { transactionRoutes } from "./api/resources/transactions";
 import { recurringTransactionRoutes } from "./api/resources/recurringTransactions";

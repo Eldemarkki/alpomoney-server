@@ -1,47 +1,22 @@
-import { RecurringTransactionId, SinkId, StorageId, TransactionId, UserId, WithIds, WithoutIds } from "./types";
+import {
+  RecurringTransaction,
+  RecurringTransactionId,
+  Sink,
+  SinkId,
+  Storage,
+  StorageId,
+  Transaction,
+  TransactionId,
+  User,
+  UserId,
+  WithoutIds
+} from "@alpomoney/shared";
 
 export interface UserWithPasswordHash {
   id: UserId,
   username: string,
   passwordHash: string
 }
-
-export type User = Omit<UserWithPasswordHash, "passwordHash">;
-
-export type Storage = WithIds<{
-  name: string,
-  initialBalance: number
-}, StorageId>
-
-export type Sink = WithIds<{
-  name: string
-}, SinkId>;
-
-export type Transaction = WithIds<{
-  amount: number,
-  description: string,
-  sinkId: SinkId,
-  storageId: StorageId,
-  category: string
-}, TransactionId>;
-
-export enum RecurringTransactionFrequency {
-  DAILY = "daily",
-  WEEKLY = "weekly",
-  MONTHLY = "monthly",
-  YEARLY = "yearly"
-}
-
-export type RecurringTransaction = WithIds<{
-  name: string,
-  amount: number,
-  description: string,
-  sinkId: SinkId,
-  storageId: StorageId,
-  category: string,
-  frequency: RecurringTransactionFrequency,
-  startDate: number
-}, RecurringTransactionId>;
 
 export interface Resource<ResourceType, ResourceId> {
   create: (userId: UserId, data: WithoutIds<ResourceType>) => Promise<ResourceType>,

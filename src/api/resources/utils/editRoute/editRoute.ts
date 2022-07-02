@@ -1,9 +1,10 @@
 import { Static, TProperties, TSchema } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
 import { UndefinedToUnknown } from "fastify/types/type-provider";
-import { AccessSingleResource, AccessSingleResourceType, UserId, WithIds, WithoutIds } from "../../../../types/types";
+import { UserId, WithIds, WithoutIds } from "@alpomoney/shared";
 import { requireAuthentication } from "../../../../utils/authUtils";
 import { NotFoundError } from "../../../../utils/errors";
+import { AccessSingleResource, AccessSingleResourceType } from "../../../../types/types";
 
 export const editRoute = <ResourceType extends TProperties & TSchema, ResourceId>(
   validator: TSchema,

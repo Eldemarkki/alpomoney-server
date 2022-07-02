@@ -1,9 +1,10 @@
 import { Static, Type } from "@sinclair/typebox";
 import { beforeEach, describe, expect, test } from "vitest";
 import { build } from "../../../app";
-import { Brand, hasKey, UserId, WithIds } from "../../../types/types";
+import { Brand, UserId, WithIds } from "@alpomoney/shared";
 import { signUp } from "../../auth/authTestUtils";
 import { resourcePlugin } from "./resourceRoutes";
+import { hasKey } from "../../../types/types";
 
 const Resource = Type.Object({
   location: Type.String()

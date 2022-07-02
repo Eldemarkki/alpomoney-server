@@ -1,7 +1,7 @@
 import { Static, Type } from "@sinclair/typebox";
 import { beforeEach, describe, expect, Mock, test, vi } from "vitest";
 import { build } from "../../../../app";
-import { Brand, UserId, WithIds } from "../../../../types/types";
+import { Brand, UserId, WithIds } from "@alpomoney/shared";
 import { createRoute } from "./createRoute";
 import { signUp } from "../../../auth/authTestUtils";
 

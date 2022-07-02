@@ -10,7 +10,8 @@ const TransactionValidator = Type.Object({
   }),
   sinkId: Type.String(),
   storageId: Type.String(),
-  category: Type.Optional(Type.String())
+  category: Type.Optional(Type.String()),
+  createdAt: Type.Number()
 });
 
 const EditTransactionBody = Type.Object({
@@ -18,7 +19,8 @@ const EditTransactionBody = Type.Object({
   amount: Type.Optional(Type.Number()),
   sinkId: Type.Optional(Type.String()),
   storageId: Type.Optional(Type.String()),
-  category: Type.Optional(Type.String())
+  category: Type.Optional(Type.String()),
+  createdAt: Type.Optional(Type.Number())
 });
 
 

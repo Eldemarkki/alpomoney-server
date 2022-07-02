@@ -1,6 +1,6 @@
 import { TProperties, TSchema } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
-import { UserId, WithIds, WithoutIds } from "../../../types/types";
+import { UserId, WithIds, WithoutIds } from "@alpomoney/shared";
 import { NotFoundError } from "../../../utils/errors";
 import { createRoute } from "./createRoute/createRoute";
 import { deleteRoute } from "./deleteRoute/deleteRoute";

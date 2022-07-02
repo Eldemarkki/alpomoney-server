@@ -1,7 +1,7 @@
 import { Static, TProperties, TSchema } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
 import { UndefinedToUnknown } from "fastify/types/type-provider";
-import { UserId, WithIds } from "../../../../types/types";
+import { UserId, WithIds } from "@alpomoney/shared";
 import { requireAuthentication } from "../../../../utils/authUtils";
 
 export const createRoute = <ResourceType extends TProperties & TSchema, ResourceId>(
