@@ -7,6 +7,8 @@ import { database } from "./utils/mockDatabase";
 import { storageRoutes } from "./api/resources/storages";
 import { UserId } from "./types/types";
 import { sinkRoutes } from "./api/resources/sinks";
+import { transactionRoutes } from "./api/resources/transactions";
+import { recurringTransactionRoutes } from "./api/resources/recurringTransactions";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -41,6 +43,8 @@ const build = async (opts: FastifyServerOptions = {}) => {
   await app.register(authRoutes, { prefix: "/auth" });
   await app.register(storageRoutes, { prefix: "/storages" });
   await app.register(sinkRoutes, { prefix: "/sinks" });
+  await app.register(transactionRoutes, { prefix: "/transactions" });
+  await app.register(recurringTransactionRoutes, { prefix: "/recurringTransactions" });
 
   return app;
 };

@@ -2,6 +2,7 @@ import { FastifyPluginAsync } from "fastify";
 import { Type, Static } from "@sinclair/typebox";
 import { database } from "../../utils/mockDatabase";
 import { InvalidCredentialsError, UserAlreadyExistsError } from "../../utils/errors";
+import { requireAuthentication } from "../../utils/authUtils";
 
 const User = Type.Object({
   username: Type.String(),
@@ -42,6 +43,12 @@ export const authRoutes: FastifyPluginAsync = async fastify => {
 
     request.session.set("userId", user.id);
     await request.session.save();
+    await reply.send(user);
+  });
+
+  fastify.get("/user", {}, async (request, reply) => {
+    const userId = requireAuthentication(request);
+    const user = await database.getUser(userId);
     await reply.send(user);
   });
 };

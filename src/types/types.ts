@@ -14,6 +14,8 @@ export type Brand<T, B> = T & { __brand: B };
 export type UserId = Brand<string, "UserId">;
 export type StorageId = Brand<string, "StorageId">;
 export type SinkId = Brand<string, "SinkId">
+export type TransactionId = Brand<string, "TransactionId">;
+export type RecurringTransactionId = Brand<string, "RecurringTransactionId">;
 
 export function hasKey<K extends string>(o: unknown, k: K): o is { [_ in K]: unknown } {
   return o !== null && typeof o === "object" && k in o;
