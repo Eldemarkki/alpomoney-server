@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  app:
+    image: alpomoney-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 0.0.0.0:3000:3000

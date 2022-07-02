@@ -2,22 +2,11 @@ import fastify, { FastifyServerOptions } from "fastify";
 import { authRoutes } from "./api/auth/authRoutes";
 import fastifyCookie from "@fastify/cookie";
 import fastifySession from "@fastify/session";
-import { DatabaseAdapter } from "./types/DatabaseAdapter";
 import { database } from "./utils/mockDatabase";
 import { storageRoutes } from "./api/resources/storages";
-import { UserId } from "@alpomoney/shared";
 import { sinkRoutes } from "./api/resources/sinks";
 import { transactionRoutes } from "./api/resources/transactions";
 import { recurringTransactionRoutes } from "./api/resources/recurringTransactions";
-
-declare module "fastify" {
-  interface FastifyInstance {
-    database: DatabaseAdapter
-  }
-  export interface Session {
-    userId?: UserId
-  }
-}
 
 const build = async (opts: FastifyServerOptions = {}) => {
   const app = fastify({

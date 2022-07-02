@@ -1,8 +1,23 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-    "strict": true
+    "target": "es2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": true,
+    "pretty": true,
+    "noEmitOnError": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "newLine": "lf",
+    "noUnusedLocals": true,
+    "noFallthroughCasesInSwitch": true,
+    "useDefineForClassFields": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "lib": ["esnext"]
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "**/*.d.ts"]
+  // "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "include": ["src/**/*"]
+  // "exclude": ["dist", "**/*.spec.ts", "**/*.test.ts"]
 }
