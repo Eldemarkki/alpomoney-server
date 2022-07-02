@@ -8,10 +8,14 @@ import { sinkRoutes } from "./api/resources/sinks";
 import { transactionRoutes } from "./api/resources/transactions";
 import { recurringTransactionRoutes } from "./api/resources/recurringTransactions";
 import { UserId } from "@alpomoney/shared";
+import { DatabaseAdapter } from "./types/DatabaseAdapter";
 
 declare module "fastify" {
   export interface Session {
     userId?: UserId
+  }
+  interface FastifyInstance {
+    database: DatabaseAdapter
   }
 }
 
