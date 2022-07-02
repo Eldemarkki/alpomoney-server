@@ -24,8 +24,10 @@
     "@alpomoney/shared": "^0.0.3",
     "@fastify/cookie": "^7.0.0",
     "@fastify/session": "^9.0.0",
+    "@prisma/client": "^4.0.0",
     "@sinclair/typebox": "^0.24.7",
     "fastify": "^4.2.0",
+    "prisma": "^4.0.0",
     "webpack": "^5.73.0"
   },
   "devDependencies": {
