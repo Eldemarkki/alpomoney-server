@@ -24,7 +24,7 @@ export const authRoutes: FastifyPluginAsync = async fastify => {
       throw new UserAlreadyExistsError();
     }
 
-    request.session.set("userId", user.id);
+    request.session.userId = user.id;
     await request.session.save();
     await reply.send(user);
   });
@@ -41,7 +41,7 @@ export const authRoutes: FastifyPluginAsync = async fastify => {
       throw new InvalidCredentialsError();
     }
 
-    request.session.set("userId", user.id);
+    request.session.userId = user.id;
     await request.session.save();
     await reply.send(user);
   });

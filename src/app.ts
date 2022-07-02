@@ -7,6 +7,13 @@ import { storageRoutes } from "./api/resources/storages";
 import { sinkRoutes } from "./api/resources/sinks";
 import { transactionRoutes } from "./api/resources/transactions";
 import { recurringTransactionRoutes } from "./api/resources/recurringTransactions";
+import { UserId } from "@alpomoney/shared";
+
+declare module "fastify" {
+  export interface Session {
+    userId?: UserId
+  }
+}
 
 const build = async (opts: FastifyServerOptions = {}) => {
   const app = fastify({
