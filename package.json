@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev src",
     "test": "dotenv -e .env.test -- vitest --threads false",
+    "test:github": "vitest --threads false",
     "lint": "eslint src --ext .ts,.js",
     "tsc": "tsc",
     "webpack": "webpack"
