@@ -1,6 +1,5 @@
 import { Type } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
-import { database } from "../../utils/mockDatabase";
 import { resourcePlugin } from "./utils/resourceRoutes";
 
 const TransactionValidator = Type.Object({
@@ -26,6 +25,6 @@ const EditTransactionBody = Type.Object({
 
 export const transactionRoutes: FastifyPluginAsync = async fastify => {
   await fastify.register(
-    resourcePlugin(TransactionValidator, EditTransactionBody, database.transaction, "Transaction")
+    resourcePlugin(TransactionValidator, EditTransactionBody, fastify.database.transaction, "Transaction")
   );
 };

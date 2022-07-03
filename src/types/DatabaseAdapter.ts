@@ -11,6 +11,7 @@ import {
   UserId,
   WithoutIds
 } from "@alpomoney/shared";
+import { ConvertDates } from "./types";
 
 export interface UserWithPasswordHash {
   id: UserId,
@@ -19,16 +20,17 @@ export interface UserWithPasswordHash {
 }
 
 export interface Resource<ResourceType, ResourceId> {
-  create: (userId: UserId, data: WithoutIds<ResourceType>) => Promise<ResourceType>,
+  create: (userId: UserId, data: WithoutIds<ConvertDates<ResourceType>>) => Promise<ResourceType>,
   delete: (userId: UserId, id: ResourceId) => Promise<boolean>,
   getAll: (userId: UserId) => Promise<ResourceType[]>,
   get: (userId: UserId, id: ResourceId) => Promise<ResourceType | undefined>,
-  edit: (userId: UserId, id: ResourceId, data: WithoutIds<ResourceType>) => Promise<ResourceType | undefined>
+  edit: (userId: UserId, id: ResourceId, data: WithoutIds<ConvertDates<ResourceType>>)
+    => Promise<ResourceType | undefined>
 }
 
 export interface DatabaseAdapter {
-  signUp: (email: string, password: string) => Promise<User | undefined>,
-  login: (email: string, password: string) => Promise<User | undefined>,
+  signUp: (username: string, password: string) => Promise<User | undefined>,
+  login: (username: string, password: string) => Promise<User | undefined>,
   getUser: (userId: UserId) => Promise<User | undefined>,
   reset: () => Promise<void>,
   storage: Resource<Storage, StorageId>,

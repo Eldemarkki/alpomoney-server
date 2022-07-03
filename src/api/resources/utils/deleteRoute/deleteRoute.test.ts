@@ -7,13 +7,16 @@ import { deleteRoute } from "./deleteRoute";
 describe("deleteRoute", async () => {
   const app = await build();
   let fn: Mock<[UserId, unknown], boolean>;
+  let user: { id: UserId, cookie: string };
+
   await app.register(deleteRoute(async (userId, id) => {
     fn(userId, id);
     return id === "1";
   }), { prefix: "/resources" });
-  const user1 = await signUp(app, "user1", "password1");
 
   beforeEach(async () => {
+    await app.database.reset();
+    user = await signUp(app, "user", "password1");
     fn = vi.fn();
   });
 
@@ -22,13 +25,13 @@ describe("deleteRoute", async () => {
       method: "DELETE",
       url: "/resources/1",
       headers: {
-        cookie: user1.cookie
+        cookie: user.cookie
       }
     });
 
     expect(response.statusCode).toBe(200);
     expect(fn).toHaveBeenCalledOnce();
-    expect(fn).toHaveBeenCalledWith(user1.id, "1");
+    expect(fn).toHaveBeenCalledWith(user.id, "1");
   });
 
   test("non-existing resource should return 404", async () => {
@@ -36,13 +39,13 @@ describe("deleteRoute", async () => {
       method: "DELETE",
       url: "/resources/2",
       headers: {
-        cookie: user1.cookie
+        cookie: user.cookie
       }
     });
 
     expect(response.statusCode).toBe(404);
     expect(fn).toHaveBeenCalledOnce();
-    expect(fn).toHaveBeenCalledWith(user1.id, "2");
+    expect(fn).toHaveBeenCalledWith(user.id, "2");
   });
 
   test("unauthenticated users should not be able to delete resources", async () => {

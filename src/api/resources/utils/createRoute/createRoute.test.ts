@@ -25,9 +25,11 @@ describe("createRoute", async () => {
       ...data
     };
   }), { prefix: "/resources" });
-  const user = await signUp(app, "user1", "password1");
+  let user: { id: UserId, cookie: string };
 
   beforeEach(async () => {
+    await app.database.reset();
+    user = await signUp(app, "user1", "password1");
     runningId = 0;
     fn = vi.fn();
   });

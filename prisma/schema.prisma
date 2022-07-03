@@ -1,0 +1,70 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+model User {
+  id           String @id @default(uuid())
+  username     String
+  passwordHash String
+
+  Sink                 Sink[]
+  Storage              Storage[]
+  Transaction          Transaction[]
+  RecurringTransaction RecurringTransaction[]
+  @@unique([username])
+}
+
+model Sink {
+  id                   String                 @id @default(uuid())
+  userId               String
+  user                 User                   @relation(fields: [userId], references: [id])
+  name                 String
+  Transaction          Transaction[]
+  RecurringTransaction RecurringTransaction[]
+}
+
+model Storage {
+  id                   String                 @id @default(uuid())
+  userId               String
+  user                 User                   @relation(fields: [userId], references: [id])
+  name                 String
+  initialBalance       Int
+  Transaction          Transaction[]
+  RecurringTransaction RecurringTransaction[]
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  amount      Int
+  description String
+  sinkId      String
+  sink        Sink     @relation(fields: [sinkId], references: [id])
+  storageId   String
+  storage     Storage  @relation(fields: [storageId], references: [id])
+  createdAt   DateTime @default(now()) @db.Date
+  category    String   @default("Uncategorized")
+}
+
+model RecurringTransaction {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  name        String
+  description String   @default("")
+  amount      Int
+  sinkId      String
+  sink        Sink     @relation(fields: [sinkId], references: [id])
+  storageId   String
+  storage     Storage  @relation(fields: [storageId], references: [id])
+  frequency   String
+  startDate   DateTime @db.Date
+  category    String   @default("Uncategorized")
+}

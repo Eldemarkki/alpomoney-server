@@ -7,16 +7,18 @@ import { getAllRoute } from "./getAllRoute";
 describe("getAllRoute", async () => {
   const app = await build();
   let fn: Mock<[UserId], number[]>;
-
-  beforeEach(async () => {
-    fn = vi.fn();
-  });
+  let user: { id: UserId, cookie: string };
 
   await app.register(getAllRoute(async userId => {
     fn(userId);
     return [1, 2, 3];
   }), { prefix: "/resources" });
-  const user = await signUp(app, "user1", "password1");
+
+  beforeEach(async () => {
+    await app.database.reset();
+    user = await signUp(app, "user1", "password1");
+    fn = vi.fn();
+  });
 
   test("should return an array of resources", async () => {
     const response = await app.inject({

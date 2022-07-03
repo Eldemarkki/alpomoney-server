@@ -1,6 +1,5 @@
 import { Type } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
-import { database } from "../../utils/mockDatabase";
 import { resourcePlugin } from "./utils/resourceRoutes";
 
 const RecurringTransactionValidator = Type.Object({
@@ -41,7 +40,7 @@ export const recurringTransactionRoutes: FastifyPluginAsync = async fastify => {
   await fastify.register(resourcePlugin(
     RecurringTransactionValidator,
     EditRecurringTransactionBody,
-    database.recurringTransaction,
+    fastify.database.recurringTransaction,
     "RecurringTransaction"
   ));
 };

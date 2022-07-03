@@ -2,18 +2,25 @@ import fastify, { FastifyServerOptions } from "fastify";
 import { authRoutes } from "./api/auth/authRoutes";
 import fastifyCookie from "@fastify/cookie";
 import fastifySession from "@fastify/session";
-import { database } from "./utils/mockDatabase";
 import { storageRoutes } from "./api/resources/storages";
 import { sinkRoutes } from "./api/resources/sinks";
 import { transactionRoutes } from "./api/resources/transactions";
 import { recurringTransactionRoutes } from "./api/resources/recurringTransactions";
 import { UserId } from "@alpomoney/shared";
+import { DatabaseAdapter } from "./types/DatabaseAdapter";
+import { createPrismaDatabase } from "./database/prismaDatabase";
+import { PrismaClient } from "@prisma/client";
 
 declare module "fastify" {
   export interface Session {
     userId?: UserId
   }
+  interface FastifyInstance {
+    database: DatabaseAdapter
+  }
 }
+
+const prisma = new PrismaClient();
 
 const build = async (opts: FastifyServerOptions = {}) => {
   const app = fastify({
@@ -22,6 +29,7 @@ const build = async (opts: FastifyServerOptions = {}) => {
     bodyLimit: 1024 * 1024 * 10
   });
 
+  const database = createPrismaDatabase(prisma);
   app.decorate("database", database);
 
   await app.register(fastifyCookie);

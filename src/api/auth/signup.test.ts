@@ -1,7 +1,6 @@
 import { test, expect, describe, beforeEach } from "vitest";
 import { build } from "../../app";
 import { getUserIdPlugin } from "../../utils/sessionUtils";
-import { database } from "../../utils/mockDatabase";
 import { signUp } from "../../api/auth/authTestUtils";
 
 describe("signup", async () => {
@@ -9,7 +8,7 @@ describe("signup", async () => {
   await app.register(getUserIdPlugin, { prefix: "/session" });
 
   beforeEach(async () => {
-    await database.reset();
+    await app.database.reset();
   });
 
   test("should return 400 bad request if password is missing", async () => {

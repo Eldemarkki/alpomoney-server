@@ -7,7 +7,7 @@ import {
 } from "@alpomoney/shared";
 import { RecurringTransactionId, SinkId, StorageId, TransactionId, UserId } from "@alpomoney/shared";
 import { DatabaseAdapter } from "../types/DatabaseAdapter";
-import { NotFoundError } from "./errors";
+import { NotFoundError } from "../utils/errors";
 
 interface Tables {
   users: UserWithPasswordHash[],
@@ -143,10 +143,11 @@ export const database: DatabaseAdapter = {
         throw new NotFoundError("Sink", data.sinkId);
       }
 
-      const transaction = {
+      const transaction: Transaction = {
         id: getRandomId().toString() as TransactionId,
         userId,
-        ...data
+        ...data,
+        createdAt: new Date(data.createdAt)
       };
       tables.transactions.push(transaction);
       return transaction;
@@ -184,7 +185,7 @@ export const database: DatabaseAdapter = {
         resource.sinkId = data.sinkId;
       }
       if (data.category !== undefined) resource.category = data.category;
-      if (data.createdAt !== undefined) resource.createdAt = data.createdAt;
+      if (data.createdAt !== undefined) resource.createdAt = new Date(data.createdAt);
 
       tables.transactions[tables.transactions.indexOf(resource)] = resource;
 
@@ -201,10 +202,11 @@ export const database: DatabaseAdapter = {
         throw new NotFoundError("Sink", data.sinkId);
       }
 
-      const recurringTransaction = {
+      const recurringTransaction: RecurringTransaction = {
         id: getRandomId().toString() as RecurringTransactionId,
         userId,
-        ...data
+        ...data,
+        startDate: new Date(data.startDate)
       };
       tables.recurringTransactions.push(recurringTransaction);
       return recurringTransaction;
@@ -250,7 +252,7 @@ export const database: DatabaseAdapter = {
       }
       if (data.category !== undefined) resource.category = data.category;
       if (data.frequency !== undefined) resource.frequency = data.frequency;
-      if (data.startDate !== undefined) resource.startDate = data.startDate;
+      if (data.startDate !== undefined) resource.startDate = new Date(data.startDate);
 
       tables.recurringTransactions[tables.recurringTransactions.indexOf(resource)] = resource;
 

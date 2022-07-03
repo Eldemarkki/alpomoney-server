@@ -8,3 +8,23 @@ services:
       dockerfile: Dockerfile
     ports:
       - 0.0.0.0:3000:3000
+    depends_on:
+      - dev-database
+    environment:
+      - DATABASE_URL=postgres://alpomoney:alpomoney@dev-database:5432/alpomoney
+  dev-database:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: alpomoney
+      POSTGRES_PASSWORD: alpomoney
+      POSTGRES_DB: alpomoney
+  # test-database:
+  #   image: postgres
+  #   ports:
+  #     - 5433:5432
+  #   environment:
+  #     POSTGRES_USER: alpomoney
+  #     POSTGRES_PASSWORD: alpomoney
+  #     POSTGRES_DB: alpomoney-test
