@@ -45,6 +45,11 @@ export const authRoutes: FastifyPluginAsync = async fastify => {
     await reply.send(user);
   });
 
+  fastify.post("/logout", {}, async (request, reply) => {
+    await request.session.destroy();
+    await reply.send();
+  });
+
   fastify.get("/user", {}, async (request, reply) => {
     const userId = requireAuthentication(request);
     const user = await fastify.database.getUser(userId);
