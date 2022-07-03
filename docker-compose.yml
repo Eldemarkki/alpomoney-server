@@ -8,6 +8,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - 0.0.0.0:3000:3000
+    depends_on:
+      - dev-database
+    environment:
+      - DATABASE_URL=postgres://alpomoney:alpomoney@dev-database:5432/alpomoney
   dev-database:
     image: postgres
     ports:
