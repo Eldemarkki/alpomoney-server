@@ -1,5 +1,6 @@
+import { UserId } from "@alpomoney/shared";
 import { Type } from "@sinclair/typebox";
-import { describe, expect, test, vi } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { build } from "../../../../app";
 import { signUp } from "../../../auth/authTestUtils";
 import { editRoute } from "./editRoute";
@@ -11,6 +12,8 @@ const Validator = Type.Object({
 describe("editRoute", async () => {
   const app = await build();
   const fn = vi.fn();
+  let user: { id: UserId, cookie: string };
+
   await app.register(editRoute(Validator, async (userId, id, data) => {
     fn(userId, id, data);
     if (id !== "1") return undefined;
@@ -20,7 +23,11 @@ describe("editRoute", async () => {
       ...data
     };
   }), { prefix: "/resources" });
-  const user = await signUp(app, "user1", "password1");
+
+  beforeEach(async () => {
+    await app.database.reset();
+    user = await signUp(app, "user1", "password1");
+  });
 
   test("edit function should be called with correct values", async () => {
     const response = await app.inject({

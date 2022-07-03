@@ -7,10 +7,7 @@ import { getSingleRoute } from "./getSingleRoute";
 describe("getSingleRoute", async () => {
   const app = await build();
   let fn: Mock<[UserId, unknown], number[]>;
-
-  beforeEach(async () => {
-    fn = vi.fn();
-  });
+  let user: { id: UserId, cookie: string };
 
   await app.register(getSingleRoute(async (userId, id) => {
     fn(userId, id);
@@ -24,7 +21,11 @@ describe("getSingleRoute", async () => {
     return undefined;
   }), { prefix: "/resources" });
 
-  const user = await signUp(app, "user1", "password1");
+  beforeEach(async () => {
+    await app.database.reset();
+    user = await signUp(app, "user1", "password1");
+    fn = vi.fn();
+  });
 
   test("should return a single object", async () => {
     const response = await app.inject({
@@ -40,7 +41,7 @@ describe("getSingleRoute", async () => {
     expect(response.statusCode).toBe(200);
     expect(response.json()).toEqual({
       id: "1",
-      userId: "0",
+      userId: user.id,
       price: 3
     });
   });
