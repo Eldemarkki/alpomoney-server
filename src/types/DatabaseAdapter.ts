@@ -27,8 +27,8 @@ export interface Resource<ResourceType, ResourceId> {
 }
 
 export interface DatabaseAdapter {
-  signUp: (email: string, password: string) => Promise<User | undefined>,
-  login: (email: string, password: string) => Promise<User | undefined>,
+  signUp: (username: string, password: string) => Promise<User | undefined>,
+  login: (username: string, password: string) => Promise<User | undefined>,
   getUser: (userId: UserId) => Promise<User | undefined>,
   reset: () => Promise<void>,
   storage: Resource<Storage, StorageId>,

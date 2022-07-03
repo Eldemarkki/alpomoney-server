@@ -13,8 +13,8 @@ export const createPrismaDatabase = (prisma: PrismaClient) => {
   };
 
   const database: DatabaseAdapter = {
-    signUp: async (email: string, password: string) => {
-      const alreadyExistingUser = await prisma.user.findFirst({ where: { username: email } });
+    signUp: async (username: string, password: string) => {
+      const alreadyExistingUser = await prisma.user.findFirst({ where: { username } });
       if (alreadyExistingUser !== null) {
         return undefined;
       }
@@ -22,7 +22,7 @@ export const createPrismaDatabase = (prisma: PrismaClient) => {
       const passwordHash = await bcrypt.hash(password, 10);
       const user = await prisma.user.create({
         data: {
-          username: email,
+          username,
           passwordHash
         }
       });
@@ -46,10 +46,10 @@ export const createPrismaDatabase = (prisma: PrismaClient) => {
         username: user.username
       };
     },
-    login: async (email: string, password: string) => {
+    login: async (username: string, password: string) => {
       const user = await prisma.user.findUnique({
         where: {
-          username: email
+          username
         }
       });
 
