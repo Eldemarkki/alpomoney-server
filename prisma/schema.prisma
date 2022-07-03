@@ -54,16 +54,17 @@ model Transaction {
 }
 
 model RecurringTransaction {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  name      String
-  amount    Int
-  sinkId    String
-  sink      Sink     @relation(fields: [sinkId], references: [id])
-  storageId String
-  storage   Storage  @relation(fields: [storageId], references: [id])
-  frequency String
-  startDate DateTime @db.Date
-  category  String   @default("Uncategorized")
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  name        String
+  description String   @default("")
+  amount      Int
+  sinkId      String
+  sink        Sink     @relation(fields: [sinkId], references: [id])
+  storageId   String
+  storage     Storage  @relation(fields: [storageId], references: [id])
+  frequency   String
+  startDate   DateTime @db.Date
+  category    String   @default("Uncategorized")
 }
