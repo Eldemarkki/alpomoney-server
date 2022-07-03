@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "dev": "ts-node-dev src",
-    "test": "vitest",
+    "test": "vitest --threads false",
     "lint": "eslint src --ext .ts,.js",
     "tsc": "tsc",
     "webpack": "webpack"
