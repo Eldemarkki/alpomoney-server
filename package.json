@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/Eldemarkki/alpomoney-server#readme",
   "dependencies": {
-    "@alpomoney/shared": "^0.0.3",
+    "@alpomoney/shared": "^0.0.4",
     "@fastify/cookie": "^7.0.0",
     "@fastify/session": "^9.0.0",
     "@prisma/client": "^4.0.0",

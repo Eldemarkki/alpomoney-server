@@ -7,14 +7,15 @@ import { deleteRoute } from "./deleteRoute/deleteRoute";
 import { editRoute } from "./editRoute/editRoute";
 import { getAllRoute } from "./getAllRoute/getAllRoute";
 import { getSingleRoute } from "./getSingleRoute/getSingleRoute";
+import { ConvertDates } from "../../../types/types";
 
 type Methods<ResourceType, ResourceId> = {
   getAll: (userId: UserId) => Promise<WithIds<ResourceType, ResourceId>[]>,
   get: (userId: UserId, id: ResourceId) => Promise<WithIds<ResourceType, ResourceId> | undefined>,
   delete: (userId: UserId, id: ResourceId) => Promise<boolean>,
-  edit: (userId: UserId, id: ResourceId, data: WithoutIds<ResourceType>) =>
+  edit: (userId: UserId, id: ResourceId, data: WithoutIds<ConvertDates<ResourceType>>) =>
     Promise<WithIds<ResourceType, ResourceId> | undefined>,
-  create: (userId: UserId, data: WithoutIds<ResourceType>) => Promise<WithIds<ResourceType, ResourceId>>
+  create: (userId: UserId, data: WithoutIds<ConvertDates<ResourceType>>) => Promise<WithIds<ResourceType, ResourceId>>
 }
 
 export const resourcePlugin = <ResourceType, ResourceId>(
@@ -32,10 +33,10 @@ export const resourcePlugin = <ResourceType, ResourceId>(
     await fastify.register(getAllRoute(methods.getAll));
     await fastify.register(deleteRoute<ResourceId>(methods.delete, resourceName));
     await fastify.register(createRoute(createValidator, async (userId, data) => {
-      return await methods.create(userId, data as WithoutIds<ResourceType>);
+      return await methods.create(userId, data as WithoutIds<ConvertDates<ResourceType>>);
     }));
     await fastify.register(editRoute<TProperties & TSchema, ResourceId>(editValidator, async (userId, id, data) => {
-      const edited = await methods.edit(userId, id, data as WithoutIds<ResourceType>);
+      const edited = await methods.edit(userId, id, data as WithoutIds<ConvertDates<ResourceType>>);
       if (!edited) throw new NotFoundError();
       return edited;
     }, resourceName));

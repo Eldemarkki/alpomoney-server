@@ -128,7 +128,13 @@ export const createPrismaDatabase = (prisma: PrismaClient) => {
     },
     recurringTransaction: {
       create: async (userId, data) => {
-        const recurringTransaction = await prisma.recurringTransaction.create({ data: { userId, ...data } });
+        const recurringTransaction = await prisma.recurringTransaction.create({
+          data: {
+            userId,
+            ...data,
+            startDate: new Date(data.startDate)
+          }
+        });
 
         return {
           ...recurringTransaction,
@@ -183,7 +189,10 @@ export const createPrismaDatabase = (prisma: PrismaClient) => {
 
         const updated = await prisma.recurringTransaction.update({
           where: { id },
-          data
+          data: {
+            ...data,
+            startDate: new Date(data.startDate)
+          }
         });
 
         return {
@@ -256,7 +265,13 @@ export const createPrismaDatabase = (prisma: PrismaClient) => {
     },
     transaction: {
       create: async (userId, data) => {
-        const transaction = await prisma.transaction.create({ data: { userId, ...data } });
+        const transaction = await prisma.transaction.create({
+          data: {
+            userId,
+            ...data,
+            createdAt: new Date(data.createdAt)
+          }
+        });
 
         return {
           ...transaction,
@@ -308,7 +323,10 @@ export const createPrismaDatabase = (prisma: PrismaClient) => {
 
         const updated = await prisma.transaction.update({
           where: { id },
-          data
+          data: {
+            ...data,
+            createdAt: new Date(data.createdAt)
+          }
         });
 
         return {
