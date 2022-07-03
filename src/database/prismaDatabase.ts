@@ -14,6 +14,11 @@ export const createPrismaDatabase = (prisma: PrismaClient) => {
 
   const database: DatabaseAdapter = {
     signUp: async (email: string, password: string) => {
+      const alreadyExistingUser = await prisma.user.findFirst({ where: { username: email } });
+      if (alreadyExistingUser !== null) {
+        return undefined;
+      }
+
       const passwordHash = await bcrypt.hash(password, 10);
       const user = await prisma.user.create({
         data: {
