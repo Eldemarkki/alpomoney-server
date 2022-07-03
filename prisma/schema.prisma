@@ -49,7 +49,7 @@ model Transaction {
   sink        Sink     @relation(fields: [sinkId], references: [id])
   storageId   String
   storage     Storage  @relation(fields: [storageId], references: [id])
-  createdAt   DateTime @default(now())
+  createdAt   DateTime @default(now()) @db.Date
   category    String   @default("Uncategorized")
 }
 
@@ -64,6 +64,6 @@ model RecurringTransaction {
   storageId String
   storage   Storage  @relation(fields: [storageId], references: [id])
   frequency String
-  startDate DateTime
+  startDate DateTime @db.Date
   category  String   @default("Uncategorized")
 }
