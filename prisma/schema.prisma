@@ -42,7 +42,6 @@ model Transaction {
   id          String   @id @default(uuid())
   userId      String
   user        User     @relation(fields: [userId], references: [id])
-  name        String
   amount      Int
   description String
   sinkId      String
