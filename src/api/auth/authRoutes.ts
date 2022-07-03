@@ -1,6 +1,5 @@
 import { FastifyPluginAsync } from "fastify";
 import { Type, Static } from "@sinclair/typebox";
-import { database } from "../../database/mockDatabase";
 import { InvalidCredentialsError, UserAlreadyExistsError } from "../../utils/errors";
 import { requireAuthentication } from "../../utils/authUtils";
 
@@ -19,7 +18,7 @@ export const authRoutes: FastifyPluginAsync = async fastify => {
   }, async (request, reply) => {
     const { username, password } = request.body;
 
-    const user = await database.signUp(username, password);
+    const user = await fastify.database.signUp(username, password);
     if (!user) {
       throw new UserAlreadyExistsError();
     }
@@ -35,7 +34,7 @@ export const authRoutes: FastifyPluginAsync = async fastify => {
     }
   }, async (request, reply) => {
     const { username, password } = request.body;
-    const user = await database.login(username, password);
+    const user = await fastify.database.login(username, password);
 
     if (!user) {
       throw new InvalidCredentialsError();
@@ -48,7 +47,7 @@ export const authRoutes: FastifyPluginAsync = async fastify => {
 
   fastify.get("/user", {}, async (request, reply) => {
     const userId = requireAuthentication(request);
-    const user = await database.getUser(userId);
+    const user = await fastify.database.getUser(userId);
     await reply.send(user);
   });
 };

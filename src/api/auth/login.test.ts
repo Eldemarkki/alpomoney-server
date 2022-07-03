@@ -2,7 +2,6 @@ import { FastifyInstance } from "fastify";
 import { beforeEach, describe, expect, test } from "vitest";
 import { build } from "../../app";
 import { getUserIdPlugin } from "../../utils/sessionUtils";
-import { database } from "../../database/mockDatabase";
 import { hasKey } from "../../types/types";
 
 describe("login", async () => {
@@ -10,8 +9,8 @@ describe("login", async () => {
   await app.register(getUserIdPlugin, { prefix: "/session" });
 
   beforeEach(async () => {
-    await database.reset();
-    await database.signUp("myUsername", "myPassword");
+    await app.database.reset();
+    await app.database.signUp("myUsername", "myPassword");
   });
 
   test("should return 400 bad request if password is missing", async () => {
