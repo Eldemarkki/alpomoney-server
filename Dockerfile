@@ -1,8 +1,8 @@
 FROM node:16-alpine AS build-stage
 WORKDIR /app
-COPY prisma prisma
-COPY package-lock.json .
 COPY package.json .
+COPY package-lock.json .
+COPY prisma prisma
 RUN npm ci
 COPY tsconfig.json .
 COPY src src
