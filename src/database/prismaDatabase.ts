@@ -21,7 +21,8 @@ export const createPrismaDatabase = (prisma: PrismaClient) => {
         return undefined;
       }
 
-      const passwordHash = await bcrypt.hash(password, 10);
+      const salt = await bcrypt.genSalt(13);
+      const passwordHash = await bcrypt.hash(password, salt);
       const user = await prisma.user.create({
         data: {
           username,
