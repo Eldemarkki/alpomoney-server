@@ -6,5 +6,6 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "api.bundle.js"
   },
-  target: "node"
+  target: "node",
+  mode: "production"
 };
