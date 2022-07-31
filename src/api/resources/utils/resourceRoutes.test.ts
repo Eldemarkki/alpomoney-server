@@ -61,6 +61,7 @@ describe("resourceRoutes", async () => {
   const user2 = await signUp(fastify, "user2", "password2");
 
   beforeEach(async () => {
+    await fastify.database.reset();
     runningId = 0;
     resources = [];
   });
