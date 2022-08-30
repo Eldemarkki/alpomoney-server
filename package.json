@@ -29,7 +29,7 @@
     "@sinclair/typebox": "^0.24.25",
     "bcryptjs": "^2.4.3",
     "fastify": "^4.3.0",
-    "prisma": "^4.1.1",
+    "prisma": "^4.2.0",
     "webpack": "^5.74.0"
   },
   "devDependencies": {
