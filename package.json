@@ -24,7 +24,7 @@
   "dependencies": {
     "@alpomoney/shared": "^0.0.4",
     "@fastify/cookie": "^7.4.0",
-    "@fastify/session": "^9.0.0",
+    "@fastify/session": "^10.0.0",
     "@prisma/client": "^4.1.1",
     "@sinclair/typebox": "^0.24.36",
     "bcryptjs": "^2.4.3",
