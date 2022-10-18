@@ -28,7 +28,7 @@
     "@prisma/client": "^4.4.0",
     "@sinclair/typebox": "^0.24.46",
     "bcryptjs": "^2.4.3",
-    "fastify": "^4.8.1",
+    "fastify": "^4.9.1",
     "prisma": "^4.4.0",
     "webpack": "^5.74.0"
   },
