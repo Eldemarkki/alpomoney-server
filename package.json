@@ -30,7 +30,7 @@
     "bcryptjs": "^2.4.3",
     "fastify": "^4.9.2",
     "prisma": "^4.6.0",
-    "webpack": "^5.74.0"
+    "webpack": "^5.75.0"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
