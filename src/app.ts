@@ -40,7 +40,7 @@ const build = async (opts: FastifyServerOptions = {}) => {
       secure: false,
       httpOnly: true,
       sameSite: false,
-      maxAge: 60 * 60 * 60
+      maxAge: 86400000 // 24 hours
     }
   });
 
