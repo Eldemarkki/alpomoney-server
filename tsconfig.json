@@ -12,7 +12,12 @@
     "newLine": "lf",
     "noUnusedLocals": true,
     "skipLibCheck": true,
-    "lib": ["ES2021"]
+    "lib": [
+      "ES2021"
+    ],
+    "outDir": "./dist",
   },
-  "include": ["src/**/*", "webpack.config.js"]
+  "include": [
+    "./src/*"
+  ]
 }

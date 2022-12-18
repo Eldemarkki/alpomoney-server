@@ -1,4 +1,4 @@
 #!/bin/sh
 
 npx prisma migrate deploy
-node api.bundle.js
+node ./dist/index.js

@@ -1,4 +1,4 @@
-FROM node:16-alpine AS build-stage
+FROM node:18.12.1 AS build-stage
 WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
@@ -7,14 +7,12 @@ RUN npm ci
 COPY tsconfig.json .
 COPY src src
 RUN npm run tsc
-COPY webpack.config.js .
-RUN npm run webpack
 
-FROM node:16-alpine AS run-stage
+FROM node:18.12.1-slim AS run-stage
 WORKDIR /app
 COPY start.sh .
 RUN npm install --location=global prisma
 COPY --from=build-stage /app/node_modules /app/node_modules
 COPY --from=build-stage /app/prisma /app/prisma
-COPY --from=build-stage /app/dist/api.bundle.js .
+COPY --from=build-stage /app/dist /app/dist
 CMD ["sh", "start.sh"]
