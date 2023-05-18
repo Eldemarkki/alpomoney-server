@@ -24,7 +24,7 @@
     "@alpomoney/shared": "^0.0.4",
     "@fastify/cookie": "^8.3.0",
     "@fastify/session": "^10.3.0",
-    "@prisma/client": "^4.14.0",
+    "@prisma/client": "^4.14.1",
     "@sinclair/typebox": "^0.28.11",
     "bcryptjs": "^2.4.3",
     "fastify": "^4.17.0",
