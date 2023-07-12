@@ -28,7 +28,7 @@
     "@sinclair/typebox": "^0.29.4",
     "bcryptjs": "^2.4.3",
     "fastify": "^4.19.2",
-    "prisma": "^4.16.2"
+    "prisma": "^5.0.0"
   },
   "devDependencies": {
     "@tsconfig/node16": "^16.1.0",
